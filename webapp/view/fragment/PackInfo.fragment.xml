@@ -1,0 +1,108 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" 
+        xmlns:l="sap.ui.layout" 
+        xmlns="sap.m"
+        xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	    xmlns:smartTable="sap.ui.comp.smarttable"
+        xmlns:navpopover="sap.ui.comp.navpopover"
+        xmlns:table="sap.ui.table" >
+	
+    <Dialog afterClose="afterClose"  beforeOpen="beforeOpen" class="sapUiPopupWithPadding" title="PackInfo">
+		<VBox width="50em" > 
+             <smartTable:SmartTable  width="100%"
+            id="headPackInfo"
+			entitySet="ZPTP_C_BOM_HEAD"
+            useExportToExcel="false" 
+			beforeExport="onBeforeExport"
+			useVariantManagement="false" 
+			useTablePersonalisation="true" 
+			header="Pack Info Header Details" 
+			showRowCount="false" 
+			persistencyKey="SmartTableReqwlkList_Explored"
+			enableAutoBinding="false" 
+            requestAtLeastFields="MaterialNumber,ShortDescription"
+             >
+			<!-- layout data used to make the table growing but the filter bar fixed -->
+			<smartTable:layoutData>
+				<FlexItemData growFactor="1" baseSize="0%"/>
+			</smartTable:layoutData>
+            <table:Table selectionMode="None" visibleRowCount="1">
+             <table:columns> 
+				<table:Column width="100px"  hAlign="Begin">
+					<table:customData>
+						<core:CustomData key="p13nData"
+										 value='\{"columnKey": "MaterialNumber", "columnIndex":"0"}' />
+					</table:customData>
+					<Text text="ISBN" />
+				       <table:template>
+                           <Text text="{MaterialNumber}" />
+					   </table:template>
+                </table:Column>
+               	<table:Column width="400px"  hAlign="Begin">
+					<table:customData>
+						<core:CustomData key="p13nData"
+										 value='\{"columnKey": "ShortDescription", "columnIndex":"1"}' />
+					</table:customData>
+					<Text text="Title" />
+				       <table:template>
+                           <Text text="{ShortDescription}" />
+					   </table:template>
+                </table:Column>
+             
+                </table:columns>
+        
+
+			 </table:Table>
+         </smartTable:SmartTable>
+       
+         <smartTable:SmartTable
+            id="ItemPackInfo"
+            entitySet="ZPTP_C_BOM_ITEM"
+			useExportToExcel="false" 
+			useVariantManagement="false" 
+			useTablePersonalisation="true" 
+			header="Pack Info Items" 
+			showRowCount="false" 
+			enableAutoBinding="false" 
+            requestAtLeastFields="BomComponent,ProductName"
+          	>
+			<!-- layout data used to make the table growing but the filter bar fixed -->
+			<smartTable:layoutData>
+				<FlexItemData growFactor="1" baseSize="0%"/>
+			</smartTable:layoutData>
+             <table:Table  selectionMode="None" visibleRowCount="5">
+			 <table:columns>
+				<table:Column width="100px"  hAlign="Begin">
+					<table:customData>
+						<core:CustomData key="p13nData"
+										 value='\{"columnKey": "BomComponent", "columnIndex":"0"}' />
+					</table:customData>
+					<Text text="ISBN" />
+				       <table:template>
+                           <Text text="{BomComponent}" />
+					   </table:template>
+                </table:Column>
+                
+                <table:Column width="400px"  hAlign="Begin">
+					<table:customData>
+						<core:CustomData key="p13nData"
+										 value='\{"columnKey": "ProductName", "columnIndex":"1"}' />
+					</table:customData>
+					<Text text="Title" />
+				       <table:template>
+                           <Text text="{ProductName}" />
+					   </table:template>
+                </table:Column>
+             
+                </table:columns>
+        
+
+             
+             </table:Table>
+			 
+         </smartTable:SmartTable>
+       
+      </VBox>
+
+        <beginButton><Button press="onOKPressed" text="OK"/></beginButton>
+	</Dialog>
+</core:FragmentDefinition>

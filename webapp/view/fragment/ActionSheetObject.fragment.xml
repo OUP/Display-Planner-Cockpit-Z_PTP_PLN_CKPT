@@ -1,0 +1,13 @@
+<ActionSheet id="actionSheet"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	title="Choose Your Action"
+	showCancelButton="true"
+	placement="Bottom">
+<Button text="Open Purchase Order "  press="fnOpenPurchaseOrder "/>
+                    <Button text="BackorderDetails "  press="fnBackorderDetails "/>
+                    <Button text="Material Requirement List"  press="fnMaterialRequirementList"/>
+                    <Button text="Requisition"  press="fnRequisition"/>
+                    <Button text="Create Requisition"  press="fnCreateRequisition"/>
+                    <Button text="Change material"  press="fnChangeMaterial "/>
+</ActionSheet>

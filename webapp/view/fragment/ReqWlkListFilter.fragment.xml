@@ -1,0 +1,22 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:navpopover="sap.ui.comp.navpopover"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.f"
+	xmlns:core="sap.ui.core">
+	>
+      <smartFilterBar:SmartFilterBar
+            id="_reqwlklistfilterID" 
+			entitySet="zptp_c_req_wl"
+			persistencyKey="SmartFilterReqwlkList_Explored"
+            useDateRangeType="true"
+			useToolbar="false">
+			<!-- layout data used to make the table growing but the filter bar fixed -->
+			<smartFilterBar:layoutData>
+				<FlexItemData shrinkFactor="0"/>
+			</smartFilterBar:layoutData>
+		</smartFilterBar:SmartFilterBar>
+	
+ </core:FragmentDefinition>

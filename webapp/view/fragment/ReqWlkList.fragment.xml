@@ -1,0 +1,50 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:navpopover="sap.ui.comp.navpopover"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.f"
+	xmlns:core="sap.ui.core">
+	<smartTable:SmartTable
+			entitySet="zptp_c_req_wl"
+			smartFilterId="_reqwlklistfilterID"
+            id="_reqwlklistID"
+            useExportToExcel="true" 
+			beforeExport="onBeforeExport"
+			useVariantManagement="true" 
+			useTablePersonalisation="true" 
+            showFullScreenButton="true"
+            fullScreenToggled="fullScreenToggledPress" 
+			header="Requisition Work List" 
+			showRowCount="true" 
+			persistencyKey="SmartTableReqwlkList_Explored"
+           	enableAutoBinding="false" 
+             
+            requestAtLeastFields="PackInfo"
+           class="sapUiResponsiveContentPadding">
+			<!-- layout data used to make the table growing but the filter bar fixed -->
+			<smartTable:layoutData>
+				<FlexItemData growFactor="1" baseSize="0%"/>
+			</smartTable:layoutData>
+     	<table:Table columnResize="fnColumnResize"    rowSelectionChange="onPress"  selectionMode="Single" >
+             		<table:columns>
+            
+				<table:Column id="PackInfoR" width="100px" hAlign="Begin">
+					<table:customData>
+						<core:CustomData key="p13nData"
+										 value='\{"columnKey": "PackInfo", "columnIndex":"10"}' />
+					</table:customData>
+					<Text text="PackInfo" />
+				      <table:template>
+                           <Link text="{PackInfo}" subtle="true" press="handleLinkPress" />
+					   </table:template>
+                </table:Column>
+                 
+
+                </table:columns>
+                
+            </table:Table> 
+	</smartTable:SmartTable>
+    
+</core:FragmentDefinition>

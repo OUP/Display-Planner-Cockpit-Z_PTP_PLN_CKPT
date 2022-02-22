@@ -1,0 +1,13 @@
+<core:FragmentDefinition 
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	>
+    <VBox>
+<Label labelFor="reportTypeId" text="Select report type" />
+						<RadioButtonGroup id="reportTypeId" columns="5" valueState="Warning" select="onReportTypeSelect" >
+							<RadioButton text="Requisitions Worklist" />
+							<RadioButton text="Materials List" />
+                            <RadioButton text="Combination" />
+						</RadioButtonGroup>
+	 </VBox>
+ </core:FragmentDefinition>

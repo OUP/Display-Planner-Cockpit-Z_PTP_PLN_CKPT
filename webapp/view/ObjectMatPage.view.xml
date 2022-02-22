@@ -1,0 +1,160 @@
+<mvc:View controllerName="oup.ptp.zptpplannerscockpit.controller.ObjectMatPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.uxap"
+    xmlns:l="sap.ui.layout"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartChart="sap.ui.comp.smartchart"
+    xmlns:smartForm="sap.ui.comp.smartform"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:m="sap.m"
+    xmlns:table="sap.ui.table" height="100%"
+    xmlns:core="sap.ui.core">
+    <m:Page title="{i18n>detailPageTitle}" showNavButton="true" navButtonPress="onNavBack">
+        <ObjectPageLayout id="ObjectMatPageLayout" enableLazyLoading="false">
+            <headerTitle>
+                <ObjectPageHeader objectTitle="{Product_Text}" objectSubtitle="{Product}">
+                    <actions>
+                        <m:Button text="Related App" press=".onButtonPress">
+                            <m:dependents>
+                                <core:Fragment fragmentName="oup.ptp.zptpplannerscockpit.view.fragment.ActionSheetObject" type="XML" />
+                            </m:dependents>
+                        </m:Button>
+                        <m:Button text="Material Inquiry" press="fnZINF"/>
+                        <m:Button text="Production Status" press="fnZPST"/>
+                        <m:Button text="Stock Overview " press="fnStockOverview "/>
+                    </actions>
+                </ObjectPageHeader>
+            </headerTitle>
+            <sections>
+                <ObjectPageSection >
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                                <smartForm:SmartForm >
+                                    <smartForm:layout>
+                                        <smartForm:Layout columnsXL="3" columnsL="3" columnsM="2"/>
+                                    </smartForm:layout>
+                                    <smartForm:Group>
+                                        <!-- ISBN -->
+                                        <smartForm:GroupElement label="ISBN">
+                                            <m:Text text="{ parts: [{path: 'Product_Text'}, {path: 'Product'}], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- Plant -->
+                                        <smartForm:GroupElement label="Plant">
+                                            <m:Text text="{ parts: [{path: 'Plant_Text'}, {path: 'Plant'}], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- Product Type -->
+                                        <smartForm:GroupElement label="Product Type">
+                                            <m:Text id="idProductTypeMat" />
+                                        </smartForm:GroupElement>
+                                        <!-- MRP Controller  -->
+                                        <smartForm:GroupElement label="MRP Controller">
+                                            <m:Text text="{ parts: [{path: 'MRPController_Text'}, {path: 'MRPController'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- 2nd Column -->
+                                    </smartForm:Group>
+                                    <smartForm:Group>
+                                        <!-- ABC Indicator  -->
+                                        <smartForm:GroupElement label="ABC Indicator">
+                                            <m:Text text="{ parts: [{path: 'ZZ1_ABCIndicator_PRD_Text'}, {path: 'ZZ1_ABCIndicator_PRD'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- Purchasing Status -->
+                                        <smartForm:GroupElement label="Purchasing Status">
+                                            <m:Text text="{ parts: [{path: 'PurchasingStatus_Text'}, {path: 'PurchasingStatus'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- Velocity Cost Code -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{VelocityCostCode}" />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+                                    <smartForm:Group>
+                                        <!-- Market -->
+                                        <smartForm:GroupElement label="Market">
+                                            <m:Text id="_IdMarketMat" />
+                                        </smartForm:GroupElement>
+                                        <!-- Pack Info -->
+                                        <smartForm:GroupElement label="PackInfo">
+                                            <m:Link id="_iddescPackinfoMat" subtle="true" press="handleLinkPress" />
+                                        </smartForm:GroupElement>
+                                        <!-- Stock -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{Stock}" />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+                                </smartForm:SmartForm >
+                            </blocks>
+                        </ObjectPageSubSection>
+                        <ObjectPageSubSection >
+                            <blocks>
+                                <l:BlockLayout background="Dashboard">
+                                    <l:BlockLayoutRow >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable id="_idStockDetailsMat" entitySet="ZPTP_C_STOCK_OVP_DET" tableType="Table" useExportToExcel="true" header="Stock Details" showRowCount="true" showFullScreenButton="true">
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None">
+                                                </table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable id="_idpreviousReprintMat" entitySet="ZPTP_C_PREVIOUS_REPRINTS" useExportToExcel="true" useVariantManagement="false" useTablePersonalisation="false" showRowCount="false" header="Previous Reprints " enableAutoBinding="false" showFullScreenButton="true" fullScreenToggled="fullScreenToggledPress" beforeRebindTable="onBeforeRebind"
+                                                requestAtLeastFields="Material" persistencyKey="SmartTableAnalytical_Explored">
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None">
+                                                </table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell>
+                                    </l:BlockLayoutRow >
+                                    <l:BlockLayoutRow >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable id="_idSalesIBPForecastMat" tableType="Table" useExportToExcel="true" header="Sales And IBP Forecast" entitySet="ZPTP_C_FORECAST_QTY" useVariantManagement="false" showFullScreenButton="true" fullScreenToggled="fullScreenToggledPress" useTablePersonalisation="false" showRowCount="false" enableAutoBinding="false">
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None">
+                                                </table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable id="_idISBNTextMat" entitySet="ZPTP_C_ISBN_TEXT" tableType="Table" useExportToExcel="true" useVariantManagement="false" useTablePersonalisation="true" header="ISBN Text" showRowCount="true">
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None" visibleRowCount="1"></table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell >
+                                    </l:BlockLayoutRow >
+                                    <l:BlockLayoutRow >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable id="_idPTPRELREQMat" entitySet="ZPTP_C_REL_REQ_MAT" tableType="Table" useExportToExcel="true" showFullScreenButton="true" fullScreenToggled="fullScreenToggledPress" enableAutoBinding="false" showRowCount="true">
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None">
+                                                    <table:columns>
+                                                        <table:Column width="100px" hAlign="Begin">
+                                                            <table:customData>
+                                                                <core:CustomData key="p13nData" value='\{"columnKey": "BomComponent", "columnIndex":"1"}' />
+                                                            </table:customData>
+                                                            <m:Text text="ISBN" />
+                                                            <table:template>
+                                                                <m:Link text="{BomComponent}" subtle="true" press="onPressISBN" />
+                                                            </table:template>
+                                                        </table:Column>
+                                                    </table:columns>
+                                                </table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell >
+                                    </l:BlockLayoutRow >
+                                </l:BlockLayout>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+        </ObjectPageLayout>
+    </m:Page>
+</mvc:View>

@@ -1,0 +1,221 @@
+<mvc:View controllerName="oup.ptp.zptpplannerscockpit.controller.ObjectCombPage"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.uxap"
+    xmlns:l="sap.ui.layout"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:smartChart="sap.ui.comp.smartchart"
+    xmlns:smartForm="sap.ui.comp.smartform"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:m="sap.m"
+    xmlns:table="sap.ui.table" height="100%"
+    xmlns:core="sap.ui.core"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <m:Page title="{i18n>detailPageTitle}" showNavButton="true" navButtonPress="onNavBack">
+        <ObjectPageLayout id="ObjectCombPageLayout" enableLazyLoading="false">
+            <headerTitle>
+                <ObjectPageHeader objectTitle="{Product_Text}" objectSubtitle="{Product}">
+                    <actions>
+                        <m:Button text="Related App" press=".onButtonPress">
+                            <m:dependents>
+                                <core:Fragment fragmentName="oup.ptp.zptpplannerscockpit.view.fragment.ActionSheetObject" type="XML" />
+                            </m:dependents>
+                        </m:Button>
+                        <m:Button text="Material Inquiry" press="fnZINF"/>
+                        <m:Button text="Production Status" press="fnZPST"/>
+                        <m:Button text="Stock Overview " press="fnStockOverview "/>
+                    </actions>
+                </ObjectPageHeader>
+            </headerTitle>
+            <sections>
+                <ObjectPageSection>
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                                <smartForm:SmartForm >
+                                    <smartForm:layout>
+                                        <smartForm:Layout columnsXL="3" columnsL="3" columnsM="2"/>
+                                    </smartForm:layout>
+                                    <smartForm:Group>
+                                        <!-- Purchase Requisition -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{PurchaseRequisition}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Purchase Requisition Item -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{PurchaseRequisitionItem}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Material -->
+                                        <smartForm:GroupElement label="ISBN">
+                                            <m:Text text="{ parts: [{path: 'Product_Text'}, {path: 'Product'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- Plant  -->
+                                        <smartForm:GroupElement label="Plant">
+                                            <m:Text text="{ parts: [{path: 'Plant_Text'}, {path: 'Plant'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- Requisition date -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{CreationDate}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Delivery date -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{DeliveryDate}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Release date -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{PurchaseRequisitionReleaseDate}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Status -->
+                                        <smartForm:GroupElement label="Status">
+                                            <m:Text text="{ parts: [{path: 'Status_Text'}, {path: 'Status'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- Purchasing Group -->
+                                        <smartForm:GroupElement label="Purchasing Group">
+                                            <m:Text text="{ parts: [{path: 'PurchasingGroup_Text'}, {path: 'PurchasingGroup'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+                                    <smartForm:Group>
+                                        <!-- ABC Indicator -->
+                                        <smartForm:GroupElement label="ABC Indicator">
+                                            <m:Text text="{ parts: [{path: 'ZZ1_ABCIndicator_PRD_Text'},{path: 'ZZ1_ABCIndicator_PRD'} ],formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- product Type -->
+                                        <smartForm:GroupElement label="Product Type">
+                                            <m:Text id="idProductTypeComb" />
+                                        </smartForm:GroupElement>
+                                        <!-- velocity Cost Code -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{VelocityCostCode}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Market -->
+                                        <smartForm:GroupElement label="Market">
+                                            <m:Text id="_IdMarketComb" />
+                                        </smartForm:GroupElement>
+                                        <!-- Pack Info -->
+                                        <smartForm:GroupElement label="PackInfo">
+                                            <m:Link id="_iddescPackinfoComb" subtle="true" press="handleLinkPress" />
+                                        </smartForm:GroupElement>
+                                        <!-- Impression Number -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{ZZ1_IMPRESSION_NUM_PRI}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Purchasing Status -->
+                                        <smartForm:GroupElement label="Purchasing Status">
+                                            <m:Text text="{ parts: [{path: 'PurchasingStatus_Text'}, {path: 'PurchasingStatus'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                        <!-- MRP Controller  -->
+                                        <smartForm:GroupElement label="MRP Controller">
+                                            <m:Text text="{ parts: [{path: 'MRPController_Text'}, {path: 'MRPController'} ], formatter:'.formatter.textFormat' }" />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+                                    <smartForm:Group>
+                                        <!-- Quantity -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{RequestedQuantity}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Stock -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{Stock}" />
+                                        </smartForm:GroupElement>
+                                        <!-- MCO Outstanding Quantity -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{McoQty}" />
+                                        </smartForm:GroupElement>
+                                        <!-- Call off no 	      -->
+                                        <smartForm:GroupElement>
+                                            <smartField:SmartField value="{RequirementTracking}" />
+                                        </smartForm:GroupElement>
+                                    </smartForm:Group>
+                                </smartForm:SmartForm >
+                            </blocks>
+                        </ObjectPageSubSection>
+                        <ObjectPageSubSection>
+                            <blocks>
+                                <l:BlockLayout background="Dashboard">
+                                    <l:BlockLayoutRow >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable entitySet="ZPTP_C_STOCK_OVP_DET" tableType="Table" id="_idStockDetailsComb" useExportToExcel="false" header="Stock Details" enableAutoBinding="false" showFullScreenButton="true" showRowCount="false">
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None">
+                                                </table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable id="_idpreviousReprintComb" entitySet="ZPTP_C_PREVIOUS_REPRINTS" useExportToExcel="false" header="Previous Reprint" useVariantManagement="false" useTablePersonalisation="false" showRowCount="false" showFullScreenButton="true" enableAutoBinding="false" beforeRebindTable="onBeforeRebind" requestAtLeastFields="Material" 
+                                                persistencyKey="SmartTableAnalytical_Explored">
+                                                <!-- layout data used to make the table growing but the filter bar fixed -->
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None">
+                                                </table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell >
+                                    </l:BlockLayoutRow >
+                                    <l:BlockLayoutRow >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable id="_idSalesIBPForecastComb" tableType="Table" useExportToExcel="false" showFullScreenButton="true" header="Sales And IBP Forecast" entitySet="ZPTP_C_FORECAST_QTY" useVariantManagement="false" useTablePersonalisation="false" showRowCount="false" enableAutoBinding="false">
+                                                <!-- layout data used to make the table growing but the filter bar fixed -->
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None">
+                                                </table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell >
+                                        <l:BlockLayoutCell >
+                                            <l:VerticalLayout >
+                                                <smartTable:SmartTable id="_idISBNTextComb" entitySet="ZPTP_C_ISBN_TEXT" tableType="Table" useExportToExcel="false" useVariantManagement="false" useTablePersonalisation="false" header="ISBN Text" showRowCount="false">
+                                                    <smartTable:layoutData>
+                                                        <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                    </smartTable:layoutData>
+                                                    <table:Table selectionMode="None" visibleRowCount="1"></table:Table>
+                                                </smartTable:SmartTable>
+                                                <smartTable:SmartTable id="_idCostComb" entitySet="ZPTP_C_RFQ_COST" tableType="Table" useExportToExcel="false" useTablePersonalisation="false" showRowCount="false">
+                                                    <m:OverflowToolbar design="Transparent">
+                                                        <m:Label text="Cost"/>
+                                                        <m:ToolbarSpacer/>
+                                                        <m:OverflowToolbarButton icon="sap-icon://edit" id="btnMultiEdit" text="Edit Columns" press="handlePressMargin"/>
+                                                    </m:OverflowToolbar>
+                                                    <smartTable:layoutData>
+                                                        <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                    </smartTable:layoutData>
+                                                    <table:Table selectionMode="None"></table:Table>
+                                                </smartTable:SmartTable>
+                                            </l:VerticalLayout >
+                                        </l:BlockLayoutCell >
+                                    </l:BlockLayoutRow >
+                                    <l:BlockLayoutRow >
+                                        <l:BlockLayoutCell >
+                                            <smartTable:SmartTable id="_idPTPRELREQComb" entitySet="ZPTP_C_REL_REQSet" header="Related Requisition Outstanding" tableType="Table" showFullScreenButton="true" useExportToExcel="false" enableAutoBinding="false" showRowCount="false">
+                                                <!-- layout data used to make the table growing but the filter bar fixed -->
+                                                <smartTable:layoutData>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                </smartTable:layoutData>
+                                                <table:Table selectionMode="None">
+                                                    <table:columns>
+                                                        <table:Column width="100px" hAlign="Begin">
+                                                            <table:customData>
+                                                                <core:CustomData key="p13nData" value='\{"columnKey": "Isbn", "columnIndex":"1"}' />
+                                                            </table:customData>
+                                                            <m:Text text="ISBN" />
+                                                            <table:template>
+                                                                <m:Link text="{Isbn}" subtle="true" press="onPressISBN" />
+                                                            </table:template>
+                                                        </table:Column>
+                                                    </table:columns>
+                                                </table:Table>
+                                            </smartTable:SmartTable>
+                                        </l:BlockLayoutCell >
+                                    </l:BlockLayoutRow >
+                                </l:BlockLayout>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+        </ObjectPageLayout>
+    </m:Page>
+</mvc:View>

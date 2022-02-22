@@ -1,0 +1,22 @@
+/* Enter your custom styles here */
+.sapUxAPObjectPageContainerNoBar
+  > .sapUxAPObjectPageSection:first-child:not(.sapUxAPObjectPageSectionNoTitle) {
+  margin: -3rem !important;
+}
+
+.sapFDynamicPageContent,
+.sapFDynamicPageContentFitContainer {
+  position: relative;
+  padding: 0 !important ;
+}
+
+.sapUiBlockLayoutSizeL:not(.sapUiBlockLayoutKeepFontSize)
+  .sapUiBlockCellContent {
+  padding: 0.5rem !important;
+  font-size: 1rem;
+}
+
+.titleTextSize {
+  font-size: xx-small;
+  max-width: fit-content;
+}
