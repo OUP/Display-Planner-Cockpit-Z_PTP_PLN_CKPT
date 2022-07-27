@@ -34,7 +34,6 @@
 						<f:FormElement label="PPB Cost">
 							<f:fields>
 								<Input id="idPPBCost" value="" />
-								
 							</f:fields>
 						</f:FormElement>
 						<f:FormElement label="Freight">

@@ -177,13 +177,37 @@
                                                     <smartTable:customToolbar>
                                                         <m:OverflowToolbar design="Transparent">
                                                             <m:ToolbarSpacer/>
-                                                            <m:OverflowToolbarButton icon="sap-icon://edit" id="btnMultiEdit" text="Edit Columns" press="handlePressMargin"/>
+                                                            <m:Button text="Automatic Cost Calculation" press="handleGetValues" type="Emphasized" />
+                                                            <m:Button text="Manual Cost Calculation" press="handlePressMargin"/>
                                                         </m:OverflowToolbar>
                                                     </smartTable:customToolbar>
                                                     <smartTable:layoutData>
                                                         <m:FlexItemData growFactor="1" baseSize="0%"/>
                                                     </smartTable:layoutData>
-                                                    <table:Table selectionMode="None" visibleRowCount="5"></table:Table>
+                                                    <table:Table selectionMode="None" visibleRowCount="5">
+                                                        <table:columns>
+                                                            <table:Column width="120px" hAlign="End" filterProperty="Margin" sortProperty="Margin">
+                                                                <table:customData>
+                                                                    <core:CustomData 
+                                                                        key="p13nData"
+                                                                        value='\{"columnKey": "Margin", "columnIndex":"2", "vAlign": "End"}' />
+                                                                </table:customData>
+                                                                <m:Text text="Margin" textAlign="End"/>
+                                                                <table:template>
+                                                                    <m:Text 
+                                                                        text="{
+                                                                            path: 'Margin',
+                                                                            type: 'sap.ui.model.type.Float',
+                                                                            formatOptions: {
+                                                                                maxFractionDigits : 3,
+                                                                                minFractionDigits: 3
+                                                                            }
+                                                                        }"
+                                                                        textAlign="End" />
+                                                                </table:template>
+                                                            </table:Column>
+                                                        </table:columns>
+                                                    </table:Table>
                                                 </smartTable:SmartTable>
                                             </l:VerticalLayout >
                                         </l:BlockLayoutCell >

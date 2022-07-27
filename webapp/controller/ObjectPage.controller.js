@@ -3,9 +3,10 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/Fragment",
     "sap/ui/core/routing/History",
+    "sap/ui/model/Filter",
     "oup/ptp/zptpplannerscockpit/model/formatter",
   ],
-  function (Controller, Fragment, History, formatter) {
+  function (Controller, Fragment, History, Filter, formatter) {
     "use strict";
 
     return Controller.extend(
@@ -61,7 +62,7 @@ sap.ui.define(
               dataReceived: (oDataResponse) => {
                 const oData = oDataResponse.getParameter("data");
 
-                if  (!oData) {
+                if (!oData) {
                   turn;
                 }
 
@@ -553,8 +554,8 @@ sap.ui.define(
           );
         },
 
-        fnStockOverview: function () {          var oData = this.getView().getBindingContext().getObject();
-
+        fnStockOverview: function () {
+          var oData = this.getView().getBindingContext().getObject();
           var oTarget = {
             semanticObject: "Material",
             action: "displayStockOverview",
@@ -703,6 +704,60 @@ sap.ui.define(
           );
         },
 
+        handleGetValues: function () {
+          var oData = this.getView().getBindingContext().getObject();
+          var oDataModel = this.getView().getModel();
+          var aFilters = [];
+
+          // purchase requisition
+          aFilters.push(
+            new Filter("PurchaseRequisition", "EQ", oData.PurchaseRequisition)
+          );
+
+          // purchase requisition item
+          aFilters.push(
+            new Filter(
+              "PurchaseRequisitionItem",
+              "EQ",
+              oData.PurchaseRequisitionItem
+            )
+          );
+
+          // read values
+          oDataModel.read("/ZPTP_C_RFQ_COST", {
+            filters: aFilters,
+            success: function (oDataResponse) {
+              try {
+                var aData = oDataResponse.results || [];
+
+                // table instance
+                var oTable = this.getView().byId("_idCost").getTable();
+
+                // first row
+                var oRow = oTable.getRows()[0];
+
+                // row cells
+                var aCells = oRow.getCells();
+
+                // quantity
+                aCells[0].setText(aData[0].Quantity);
+
+                // unit cost
+                aCells[1].setText(aData[0].UnitCost);
+
+                // margin
+                aCells[2].setText(aData[0].Margin);
+
+                // message
+                sap.m.MessageToast.show(
+                  "Automatic cost calculation has updated cost table successfully"
+                );
+              } catch (error) {}
+            }.bind(this),
+            error: function (_oErrorResponse) {},
+          });
+        },
+
         handlePressMargin: function (oEvent) {
           // var aMaterial = oEvent.getSource().getBindingContext().getProperty("matnr");
           // var aPlant    = this.getView().getBindingContext().getProperty("Plant");
@@ -730,37 +785,49 @@ sap.ui.define(
           var that = this;
           this._pMarginCostDialog.then(
             function (oDialog) {
-              var vFirstCost = this.getView().byId("idFirstCost").getValue();
-              var vPPBCost = this.getView().byId("idPPBCost").getValue();
-              var vFreight = this.getView().byId("idFreight").getValue();
-              var vRoyalty = this.getView().byId("idRoyalty").getValue();
-              var vDiscount = this.getView().byId("idDiscount").getValue();
-              var vUnitSale = this.getView().byId("idUnitSale").getValue();
-              var vRetailPrice = this.getView()
-                .byId("idRetailPrice")
-                .getValue();
+              var oView = this.getView();
+              var vFirstCost = parseFloat(oView.byId("idFirstCost").getValue());
+              var vPPBCost = parseFloat(oView.byId("idPPBCost").getValue());
+              var vFreightCost = parseFloat(oView.byId("idFreight").getValue());
+              var vRoyalty = parseFloat(oView.byId("idRoyalty").getValue());
+              var vDiscount = parseFloat(oView.byId("idDiscount").getValue());
+              var vUnitSale = parseFloat(oView.byId("idUnitSale").getValue());
+              var vRetailPrice = parseFloat(
+                oView.byId("idRetailPrice").getValue()
+              );
 
-              var vProductionCostTotal =
-                parseFloat(vFirstCost) +
-                parseFloat(vPPBCost) +
-                parseFloat(vFreight);
-              var vRoyaltyValue =
-                (vProductionCostTotal * parseInt(vRoyalty)) / 100;
-              var vTotalCost = vProductionCostTotal + vRoyaltyValue;
+              // old logic
+              // var vProductionCostTotal = vFirstCost + vPPBCost + vFreightCost;
+              // var vRoyaltyValue = (vProductionCostTotal * vRoyalty) / 100;
+              // var vTotalCost = vProductionCostTotal + vRoyaltyValue;
+              // var vDiscountValue = (vRetailPrice * vDiscount) / 100;
+              // var vTotalIncome = vUnitSale * (vRetailPrice - vDiscountValue);
+              // var vFinalMargin = vTotalIncome - vTotalCost;
 
-              var vDiscountValue =
-                (parseInt(vRetailPrice) * parseInt(vDiscount)) / 100;
-              var vTotalIncome =
-                parseInt(vUnitSale) * (parseInt(vRetailPrice) - vDiscountValue);
-              var vFinalMargin = vTotalIncome - vTotalCost;
-              that
-                .getView()
+              // new logic
+              var vProductionCostTotal = vFirstCost + vPPBCost + vFreightCost;
+              var vRoyaltyCalc = (vProductionCostTotal * vRoyalty) / 100;
+              var vTotalCost = vUnitSale * (vProductionCostTotal + vRoyaltyCalc);
+              var vDiscountCalc = (vRetailPrice * vDiscount) / 100;
+              var vTotalIncome = vUnitSale * (vRetailPrice - vDiscountCalc);
+              var vMargin = vTotalIncome - vTotalCost;
+
+              var oCells = oView
                 .byId("_idCost")
                 .getTable()
                 .getRows()[0]
-                .getCells()[2]
-                .setText(vFinalMargin);
-              //	this._configDialog(oButton, oDialog);
+                .getCells();
+
+              // quanity
+              oCells[0].setText(vUnitSale);
+
+              // unit cost
+              oCells[1].setText(vTotalIncome.toFixed(2));
+
+              // margin
+              oCells[2].setText(vMargin.toFixed(2));
+
+              // this._configDialog(oButton, oDialog);
               oDialog.close();
             }.bind(this)
           );
