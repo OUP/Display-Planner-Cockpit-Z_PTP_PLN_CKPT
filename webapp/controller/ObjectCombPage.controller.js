@@ -3,9 +3,10 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/Fragment",
     "sap/ui/core/routing/History",
+    "sap/ui/model/Filter",
     "oup/ptp/zptpplannerscockpit/model/formatter",
   ],
-  function (Controller, Fragment, History, formatter) {
+  function (Controller, Fragment, History, Filter, formatter) {
     "use strict";
     var _oCombinationModel = null;
 
@@ -34,7 +35,9 @@ sap.ui.define(
           if (this._sPath === undefined) {
             this._sPath = oEvent.mParameters.arguments.obejctPath;
           }
-          this.onAfterMatched();
+
+          // set timeout for async call after 1 second
+          setTimeout(() => this.onAfterMatched(), 1000);
         },
         fullScreenToggledPress: function (oEvent) {
           if (oEvent.getParameters().fullScreen) {
@@ -55,8 +58,8 @@ sap.ui.define(
               dataReceived: (oDataResponse) => {
                 const oData = oDataResponse.getParameter("data");
 
-                if(!oData) {
-                    return;
+                if (!oData) {
+                  return;
                 }
 
                 // trigger table rebind
@@ -73,56 +76,95 @@ sap.ui.define(
             },
           });
 
-          this.getView()
-            .byId("_idpreviousReprintComb")
-            .getTable()
-            .bindRows("/" + sPath + "/to_PrePrnt", null, null);
-          // this.getView().byId("_idpreviousReprint").bindRows("/");
+          try {
+            this.getView()
+              .byId("_idpreviousReprintComb")
+              .getTable()
+              .bindRows("/" + sPath + "/to_PrePrnt", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          //var aPath = "/" + sPath + "/to_Forecast";
-          this.getView()
-            .byId("_idSalesIBPForecastComb")
-            .getTable()
-            .bindRows("/" + sPath + "/to_Forecast", null, null);
-          this.getView()
-            .byId("_idISBNTextComb")
-            .getTable()
-            .bindRows("/" + sPath + "/to_Description", null, null);
-          this.getView()
-            .byId("_idStockDetailsComb")
-            .getTable()
-            .bindRows("/" + sPath + "/to_StockOvp", null, null);
-          this.getView()
-            .byId("_idCostComb")
-            .getTable()
-            .bindRows("/" + sPath + "/to_Costs", null, null);
+          try {
+            this.getView()
+              .byId("_idSalesIBPForecastComb")
+              .getTable()
+              .bindRows("/" + sPath + "/to_Forecast", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          //   this.getView()
-          //     .byId("_idPTPRELREQComb")
-          //     .getTable()
-          //     .bindRows("/" + sPath + "/to_Relreq", null, null);
+          try {
+            this.getView()
+              .byId("_idISBNTextComb")
+              .getTable()
+              .bindRows("/" + sPath + "/to_Description", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idSalesIBPForecastComb")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
-          this.getView()
-            .byId("_idpreviousReprintComb")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
+          try {
+            this.getView()
+              .byId("_idStockDetailsComb")
+              .getTable()
+              .bindRows("/" + sPath + "/to_StockOvp", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idPTPRELREQComb")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
-          this.getView()
-            .byId("_idStockDetailsComb")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
-          this.getView()
-            .byId("_idCostComb")
-            .getTable()
-            .attachBusyStateChanged(this._onBusyStateChanged);
+          try {
+            this.getView()
+              .byId("_idCostComb")
+              .getTable()
+              .bindRows("/" + sPath + "/to_Costs", null, null);
+          } catch (error) {
+            // no catch block
+          }
+
+          try {
+            this.getView()
+              .byId("_idSalesIBPForecastComb")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
+
+          try {
+            this.getView()
+              .byId("_idpreviousReprintComb")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
+
+          try {
+            this.getView()
+              .byId("_idPTPRELREQComb")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
+
+          try {
+            this.getView()
+              .byId("_idStockDetailsComb")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
+
+          try {
+            this.getView()
+              .byId("_idCostComb")
+              .getTable()
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
 
           this.fnDescriptionPack(sPath, "to_PackInfo");
           this.fnDescriptionMarket(sPath, "to_Market");
@@ -885,45 +927,151 @@ sap.ui.define(
             }.bind(this)
           );
         },
+
         onOKMarginPressed: function () {
           var that = this;
           this._pMarginCostDialog.then(
             function (oDialog) {
-              var vFirstCost = this.getView().byId("idFirstCost").getValue();
-              var vPPBCost = this.getView().byId("idPPBCost").getValue();
-              var vFreight = this.getView().byId("idFreight").getValue();
-              var vRoyalty = this.getView().byId("idRoyalty").getValue();
-              var vDiscount = this.getView().byId("idDiscount").getValue();
-              var vUnitSale = this.getView().byId("idUnitSale").getValue();
-              var vRetailPrice = this.getView()
-                .byId("idRetailPrice")
-                .getValue();
+              var oView = this.getView();
+              var vFirstCost =
+                parseFloat(oView.byId("idFirstCost").getValue()) || 0;
+              var vPPBCost =
+                parseFloat(oView.byId("idPPBCost").getValue()) || 0;
+              var vFreightCost =
+                parseFloat(oView.byId("idFreight").getValue()) || 0;
+              var vRoyalty =
+                parseFloat(oView.byId("idRoyalty").getValue()) || 0;
+              var vDiscount =
+                parseFloat(oView.byId("idDiscount").getValue()) || 0;
+              var vUnitSale =
+                parseFloat(oView.byId("idUnitSale").getValue()) || 0;
+              var vRetailPrice =
+                parseFloat(oView.byId("idRetailPrice").getValue()) || 0;
 
-              var vProductionCostTotal =
-                parseFloat(vFirstCost) +
-                parseFloat(vPPBCost) +
-                parseFloat(vFreight);
+              // new logic
+              var vProductionCostTotal = vFirstCost + vPPBCost + vFreightCost;
+              var vDiscountCalc = (vRetailPrice * vDiscount) / 100;
+              var vTotalIncome = vUnitSale * (vRetailPrice - vDiscountCalc);
 
-              var vRoyaltyValue =
-                (vProductionCostTotal * parseInt(vRoyalty)) / 100;
-              var vTotalCost = vProductionCostTotal + vRoyaltyValue;
-              var vDiscountValue =
-                (parseInt(vRetailPrice) * parseInt(vDiscount)) / 100;
-              var vTotalIncome =
-                parseInt(vUnitSale) * (vRetailPrice - vDiscountValue);
+              var vProductionCostUnit = vProductionCostTotal / vUnitSale;
+              var vProductionCostTotalNew =
+                vUnitSale *
+                (vProductionCostUnit + vProductionCostUnit * (vRoyalty / 100));
+              var vFinalMargin = vTotalIncome - vProductionCostTotalNew;
 
-              var vFinalMargin = vTotalIncome - vTotalCost;
-              that
-                .getView()
+              var oCells = oView
                 .byId("_idCostComb")
                 .getTable()
                 .getRows()[0]
-                .getCells()[2]
-                .setText(vFinalMargin);
+                .getCells();
+
+              // production unit cost
+              oCells[0].setText(vProductionCostUnit.toFixed(2));
+
+              // quantity
+              oCells[1].setText(vUnitSale);
+
+              // production cost total
+              oCells[2].setText(vProductionCostTotalNew.toFixed(2));
+
+              // total income
+              oCells[3].setText(vTotalIncome.toFixed(2));
+
+              // margin
+              oCells[4].setText(vFinalMargin.toFixed(2));
+
+              // margin  %
+              oCells[5].setText(
+                ((vFinalMargin / vProductionCostTotalNew) * 100).toFixed(2)
+              );
+
               //	this._configDialog(oButton, oDialog);
               oDialog.close();
             }.bind(this)
           );
+        },
+
+        onCancelMarginPressed: function () {
+          this._pMarginCostDialog.then((oDialog) => oDialog.close());
+        },
+
+        handleGetValues: function () {
+          var oData = this.getView().getBindingContext().getObject();
+          var oDataModel = this.getView().getModel();
+          var aFilters = [];
+
+          // purchase requisition
+          aFilters.push(
+            new Filter("PurchaseRequisition", "EQ", oData.PurchaseRequisition)
+          );
+
+          // purchase requisition item
+          aFilters.push(
+            new Filter(
+              "PurchaseRequisitionItem",
+              "EQ",
+              oData.PurchaseRequisitionItem
+            )
+          );
+
+          // start busy indicator
+          sap.ui.core.BusyIndicator.show(0);
+
+          // read values
+          oDataModel.read("/ZPTP_C_RFQ_COST", {
+            filters: aFilters,
+            success: function (oDataResponse) {
+              try {
+                var aData = oDataResponse.results || [];
+
+                // table instance
+                var oTable = this.getView().byId("_idCostComb").getTable();
+
+                // first row
+                var oRow = oTable.getRows()[0];
+
+                // row cells
+                var aCells = oRow.getCells();
+
+                // unit cost
+                aCells[0].setText(parseFloat(aData[0].UnitCost).toFixed(2));
+
+                // quantity
+                aCells[1].setText(parseFloat(aData[0].Quantity).toFixed(2));
+
+                // production cost total
+                aCells[2].setText(
+                  parseFloat(aData[0].ProductionCostTotal).toFixed(2)
+                );
+
+                // total income
+                aCells[3].setText(parseFloat(aData[0].TotalIncome).toFixed(2));
+
+                // margin
+                aCells[4].setText(parseFloat(aData[0].Margin).toFixed(2));
+
+                // margin  %
+                aCells[5].setText(
+                  parseFloat(aData[0].MarginPercentage).toFixed(2)
+                );
+
+                // message
+                sap.m.MessageToast.show(
+                  "Automatic cost calculation has updated cost table successfully"
+                );
+
+                // stop busy indicator
+                sap.ui.core.BusyIndicator.hide();
+              } catch (error) {
+                // stop busy indicator
+                sap.ui.core.BusyIndicator.hide();
+              }
+            }.bind(this),
+            error: function (_oErrorResponse) {
+              // stop busy indicator
+              sap.ui.core.BusyIndicator.hide();
+            },
+          });
         },
       }
     );

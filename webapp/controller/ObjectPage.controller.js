@@ -63,7 +63,7 @@ sap.ui.define(
                 const oData = oDataResponse.getParameter("data");
 
                 if (!oData) {
-                  turn;
+                  return;
                 }
 
                 // trigger table rebind
@@ -80,66 +80,104 @@ sap.ui.define(
             },
           });
 
-          this.getView()
-            .byId("_idpreviousReprint")
-            .getTable()
-            .bindRows("/" + sPath + "/to_PrePrnt", null, null);
-          // this.getView().byId("_idpreviousReprint").bindRows("/");
+          try {
+            this.getView()
+              .byId("_idpreviousReprint")
+              .getTable()
+              .bindRows("/" + sPath + "/to_PrePrnt", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idpreviousReprint")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
+          try {
+            this.getView()
+              .byId("_idpreviousReprint")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idSalesIBPForecast")
-            .getTable()
-            .bindRows("/" + sPath + "/to_Forecast", null, null);
+          try {
+            this.getView()
+              .byId("_idSalesIBPForecast")
+              .getTable()
+              .bindRows("/" + sPath + "/to_Forecast", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idISBNText")
-            .getTable()
-            .bindRows("/" + sPath + "/to_Description", null, null);
+          try {
+            this.getView()
+              .byId("_idISBNText")
+              .getTable()
+              .bindRows("/" + sPath + "/to_Description", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idStockDetails")
-            .getTable()
-            .bindRows("/" + sPath + "/to_StockOvp", null, null);
+          try {
+            this.getView()
+              .byId("_idStockDetails")
+              .getTable()
+              .bindRows("/" + sPath + "/to_StockOvp", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idCost")
-            .getTable()
-            .bindRows("/" + sPath + "/to_Costs", null, null);
+          try {
+            this.getView()
+              .byId("_idCost")
+              .getTable()
+              .bindRows("/" + sPath + "/to_Costs", null, null);
+          } catch (error) {
+            // no catch block
+          }
 
-          //   this.getView()
-          //     .byId("_idPTPRELREQ")
-          //     .getTable()
-          //     .bindRows("/" + sPath + "/to_Relreq", null, null);
+          try {
+            this.getView()
+              .byId("_idSalesIBPForecast")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idSalesIBPForecast")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
+          try {
+            this.getView()
+              .byId("_idPTPRELREQ")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idPTPRELREQ")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
+          try {
+            this.getView()
+              .byId("_idStockDetails")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idStockDetails")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
+          try {
+            this.getView()
+              .byId("_idStockDetails")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
 
-          this.getView()
-            .byId("_idStockDetails")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
-
-          this.getView()
-            .byId("_idCost")
-            .getItems()[1]
-            .attachBusyStateChanged(this._onBusyStateChanged);
+          try {
+            this.getView()
+              .byId("_idCost")
+              .getItems()[1]
+              .attachBusyStateChanged(this._onBusyStateChanged);
+          } catch (error) {
+            // no catch block
+          }
 
           this.fnDescriptionPack(sPath, "to_PackInfo");
           this.fnDescriptionMarket(sPath, "to_Market");
@@ -723,6 +761,9 @@ sap.ui.define(
             )
           );
 
+          // start busy indicator
+          sap.ui.core.BusyIndicator.show(0);
+
           // read values
           oDataModel.read("/ZPTP_C_RFQ_COST", {
             filters: aFilters,
@@ -739,22 +780,44 @@ sap.ui.define(
                 // row cells
                 var aCells = oRow.getCells();
 
-                // quantity
-                aCells[0].setText(aData[0].Quantity);
-
                 // unit cost
-                aCells[1].setText(aData[0].UnitCost);
+                aCells[0].setText(parseFloat(aData[0].UnitCost).toFixed(2));
+
+                // quantity
+                aCells[1].setText(parseFloat(aData[0].Quantity).toFixed(2));
+
+                // production cost total
+                aCells[2].setText(
+                  parseFloat(aData[0].ProductionCostTotal).toFixed(2)
+                );
+
+                // total income
+                aCells[3].setText(parseFloat(aData[0].TotalIncome).toFixed(2));
 
                 // margin
-                aCells[2].setText(aData[0].Margin);
+                aCells[4].setText(parseFloat(aData[0].Margin).toFixed(2));
+
+                // margin  %
+                aCells[5].setText(
+                  parseFloat(aData[0].MarginPercentage).toFixed(2)
+                );
 
                 // message
                 sap.m.MessageToast.show(
                   "Automatic cost calculation has updated cost table successfully"
                 );
-              } catch (error) {}
+
+                // stop busy indicator
+                sap.ui.core.BusyIndicator.hide();
+              } catch (error) {
+                // stop busy indicator
+                sap.ui.core.BusyIndicator.hide();
+              }
             }.bind(this),
-            error: function (_oErrorResponse) {},
+            error: function (_oErrorResponse) {
+              // stop busy indicator
+              sap.ui.core.BusyIndicator.hide();
+            },
           });
         },
 
@@ -786,31 +849,31 @@ sap.ui.define(
           this._pMarginCostDialog.then(
             function (oDialog) {
               var oView = this.getView();
-              var vFirstCost = parseFloat(oView.byId("idFirstCost").getValue());
-              var vPPBCost = parseFloat(oView.byId("idPPBCost").getValue());
-              var vFreightCost = parseFloat(oView.byId("idFreight").getValue());
-              var vRoyalty = parseFloat(oView.byId("idRoyalty").getValue());
-              var vDiscount = parseFloat(oView.byId("idDiscount").getValue());
-              var vUnitSale = parseFloat(oView.byId("idUnitSale").getValue());
-              var vRetailPrice = parseFloat(
-                oView.byId("idRetailPrice").getValue()
-              );
-
-              // old logic
-              // var vProductionCostTotal = vFirstCost + vPPBCost + vFreightCost;
-              // var vRoyaltyValue = (vProductionCostTotal * vRoyalty) / 100;
-              // var vTotalCost = vProductionCostTotal + vRoyaltyValue;
-              // var vDiscountValue = (vRetailPrice * vDiscount) / 100;
-              // var vTotalIncome = vUnitSale * (vRetailPrice - vDiscountValue);
-              // var vFinalMargin = vTotalIncome - vTotalCost;
+              var vFirstCost =
+                parseFloat(oView.byId("idFirstCost").getValue()) || 0;
+              var vPPBCost =
+                parseFloat(oView.byId("idPPBCost").getValue()) || 0;
+              var vFreightCost =
+                parseFloat(oView.byId("idFreight").getValue()) || 0;
+              var vRoyalty =
+                parseFloat(oView.byId("idRoyalty").getValue()) || 0;
+              var vDiscount =
+                parseFloat(oView.byId("idDiscount").getValue()) || 0;
+              var vUnitSale =
+                parseFloat(oView.byId("idUnitSale").getValue()) || 0;
+              var vRetailPrice =
+                parseFloat(oView.byId("idRetailPrice").getValue()) || 0;
 
               // new logic
               var vProductionCostTotal = vFirstCost + vPPBCost + vFreightCost;
-              var vRoyaltyCalc = (vProductionCostTotal * vRoyalty) / 100;
-              var vTotalCost = vUnitSale * (vProductionCostTotal + vRoyaltyCalc);
               var vDiscountCalc = (vRetailPrice * vDiscount) / 100;
               var vTotalIncome = vUnitSale * (vRetailPrice - vDiscountCalc);
-              var vMargin = vTotalIncome - vTotalCost;
+
+              var vProductionCostUnit = vProductionCostTotal / vUnitSale;
+              var vProductionCostTotalNew =
+                vUnitSale *
+                (vProductionCostUnit + vProductionCostUnit * (vRoyalty / 100));
+              var vFinalMargin = vTotalIncome - vProductionCostTotalNew;
 
               var oCells = oView
                 .byId("_idCost")
@@ -818,19 +881,34 @@ sap.ui.define(
                 .getRows()[0]
                 .getCells();
 
-              // quanity
-              oCells[0].setText(vUnitSale);
+              // production unit cost
+              oCells[0].setText(vProductionCostUnit.toFixed(2));
 
-              // unit cost
-              oCells[1].setText(vTotalIncome.toFixed(2));
+              // quantity
+              oCells[1].setText(vUnitSale);
+
+              // production cost total
+              oCells[2].setText(vProductionCostTotalNew.toFixed(2));
+
+              // total income
+              oCells[3].setText(vTotalIncome.toFixed(2));
 
               // margin
-              oCells[2].setText(vMargin.toFixed(2));
+              oCells[4].setText(vFinalMargin.toFixed(2));
+
+              // margin  %
+              oCells[5].setText(
+                ((vFinalMargin / vProductionCostTotalNew) * 100).toFixed(2)
+              );
 
               // this._configDialog(oButton, oDialog);
               oDialog.close();
             }.bind(this)
           );
+        },
+
+        onCancelMarginPressed: function () {
+          this._pMarginCostDialog.then((oDialog) => oDialog.close());
         },
 
         onButtonPress: function (oEvent) {
@@ -843,7 +921,9 @@ sap.ui.define(
           if (this._sPath === undefined) {
             this._sPath = oEvent.mParameters.arguments.obejctPath;
           }
-          this.onAfterMatched();
+
+          // set timeout for async call after 1 second
+          setTimeout(() => this.onAfterMatched(), 1000);
         },
 
         _onBusyStateChanged: function (oEvent) {

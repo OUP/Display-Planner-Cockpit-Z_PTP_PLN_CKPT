@@ -1,4 +1,5 @@
-<mvc:View controllerName="oup.ptp.zptpplannerscockpit.controller.ObjectPage"
+<mvc:View
+    controllerName="oup.ptp.zptpplannerscockpit.controller.ObjectPage"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.uxap"
     xmlns:l="sap.ui.layout"
@@ -7,10 +8,11 @@
     xmlns:smartForm="sap.ui.comp.smartform"
     xmlns:smartField="sap.ui.comp.smartfield"
     xmlns:m="sap.m"
-    xmlns:table="sap.ui.table" height="100%"
-    xmlns:core="sap.ui.core">
-
-    <m:Page title="{i18n>detailPageTitle}" showNavButton="true" navButtonPress="onNavBack">
+    xmlns:table="sap.ui.table"
+    height="100%"
+    xmlns:core="sap.ui.core"
+>
+    <m:Page title="{i18n>detailPageTitle}" showNavButton="true" navButtonPress="onNavBack" showHeader="false">
         <ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="false" upperCaseAnchorBar="false">
             <headerTitle>
                 <ObjectPageHeader objectTitle="{Material_Text}" objectSubtitle="{Material}">
@@ -20,20 +22,20 @@
                                 <core:Fragment fragmentName="oup.ptp.zptpplannerscockpit.view.fragment.ActionSheetObject" type="XML" />
                             </m:dependents>
                         </m:Button>
-                        <m:Button text="Material Inquiry" press="fnZINF"/>
-                        <m:Button text="Production Status" press="fnZPST"/>
-                        <m:Button text="Stock Overview " press="fnStockOverview"/>
+                        <m:Button text="Material Inquiry" press="fnZINF" />
+                        <m:Button text="Production Status" press="fnZPST" />
+                        <m:Button text="Stock Overview " press="fnStockOverview" />
                     </actions>
                 </ObjectPageHeader>
             </headerTitle>
             <sections>
-                <ObjectPageSection >
+                <ObjectPageSection>
                     <subSections>
                         <ObjectPageSubSection>
                             <blocks>
                                 <smartForm:SmartForm>
                                     <smartForm:layout>
-                                        <smartForm:Layout columnsXL="3" columnsL="3" columnsM="2"/>
+                                        <smartForm:Layout columnsXL="3" columnsL="3" columnsM="2" />
                                     </smartForm:layout>
                                     <!-- 1st Coulmn -->
                                     <smartForm:Group>
@@ -136,88 +138,226 @@
                                 <l:BlockLayout id="BlockLayout" background="Dashboard">
                                     <l:BlockLayoutRow accentCells="Accent1">
                                         <l:BlockLayoutCell id="Accent1">
-                                            <smartTable:SmartTable id="_idStockDetails" entitySet="ZPTP_C_STOCK_OVP_DET" tableType="Table" fullScreenToggled="fullScreenToggledPress" showFullScreenButton="true" useExportToExcel="true" header="Stock Details" enableAutoBinding="false" showRowCount="false">
-                                                <table:Table selectionMode="None" visibleRowCount="5">
-                                                </table:Table>
+                                            <smartTable:SmartTable
+                                                id="_idStockDetails"
+                                                entitySet="ZPTP_C_STOCK_OVP_DET"
+                                                tableType="Table"
+                                                fullScreenToggled="fullScreenToggledPress"
+                                                showFullScreenButton="true"
+                                                useExportToExcel="true"
+                                                header="Stock Details"
+                                                enableAutoBinding="false"
+                                                showRowCount="false"
+                                            >
+                                                <table:Table selectionMode="None" visibleRowCount="5" />
                                             </smartTable:SmartTable>
                                         </l:BlockLayoutCell>
-                                        <l:BlockLayoutCell >
-                                            <smartTable:SmartTable id="_idpreviousReprint" entitySet="ZPTP_C_PREVIOUS_REPRINTS" useExportToExcel="true" header="Previous Reprint" useVariantManagement="false" showFullScreenButton="true" useTablePersonalisation="false" showRowCount="false" fullScreenToggled="fullScreenToggledPress" enableAutoBinding="false" beforeRebindTable="onBeforeRebind" 
-                                                requestAtLeastFields="Material" persistencyKey="SmartTableAnalytical_Explored">
+                                        <l:BlockLayoutCell>
+                                            <smartTable:SmartTable
+                                                id="_idpreviousReprint"
+                                                entitySet="ZPTP_C_PREVIOUS_REPRINTS"
+                                                useExportToExcel="true"
+                                                header="Previous Reprint"
+                                                useVariantManagement="false"
+                                                showFullScreenButton="true"
+                                                useTablePersonalisation="false"
+                                                showRowCount="false"
+                                                fullScreenToggled="fullScreenToggledPress"
+                                                enableAutoBinding="false"
+                                                beforeRebindTable="onBeforeRebind"
+                                                requestAtLeastFields="Material"
+                                                persistencyKey="SmartTableAnalytical_Explored"
+                                            >
                                                 <!-- layout data used to make the table growing but the filter bar fixed -->
                                                 <smartTable:layoutData>
-                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%" />
                                                 </smartTable:layoutData>
-                                                <table:Table selectionMode="None" visibleRowCount="5">
-                                                </table:Table>
+                                                <table:Table selectionMode="None" visibleRowCount="5" />
                                             </smartTable:SmartTable>
                                         </l:BlockLayoutCell>
                                     </l:BlockLayoutRow>
                                     <l:BlockLayoutRow accentCells="Accent1">
-                                        <l:BlockLayoutCell >
-                                            <smartTable:SmartTable id="_idSalesIBPForecast" tableType="Table" useExportToExcel="true" header="Sales And IBP Forecast" entitySet="ZPTP_C_FORECAST_QTY" useVariantManagement="false" showFullScreenButton="true" fullScreenToggled="fullScreenToggledPress" useTablePersonalisation="false" showRowCount="false" enableAutoBinding="false">
+                                        <l:BlockLayoutCell>
+                                            <smartTable:SmartTable
+                                                id="_idSalesIBPForecast"
+                                                tableType="Table"
+                                                useExportToExcel="true"
+                                                header="Sales And IBP Forecast"
+                                                entitySet="ZPTP_C_FORECAST_QTY"
+                                                useVariantManagement="false"
+                                                showFullScreenButton="true"
+                                                fullScreenToggled="fullScreenToggledPress"
+                                                useTablePersonalisation="false"
+                                                showRowCount="false"
+                                                enableAutoBinding="false"
+                                            >
                                                 <!-- layout data used to make the table growing but the filter bar fixed -->
                                                 <smartTable:layoutData>
-                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%" />
                                                 </smartTable:layoutData>
-                                                <table:Table visibleRowCount="7" selectionMode="None">
-                                                </table:Table>
+                                                <table:Table visibleRowCount="7" selectionMode="None" />
                                             </smartTable:SmartTable>
-                                        </l:BlockLayoutCell >
-                                        <l:BlockLayoutCell >
-                                            <l:VerticalLayout >
-                                                <smartTable:SmartTable id="_idISBNText" entitySet="ZPTP_C_ISBN_TEXT" smartFilterId="smartFilterBar" tableType="Table" useExportToExcel="false" useVariantManagement="false" useTablePersonalisation="false" header="ISBN Text" showRowCount="false">
-                                                    <smartTable:layoutData>
-                                                        <m:FlexItemData growFactor="1" baseSize="0%"/>
-                                                    </smartTable:layoutData>
-                                                    <table:Table selectionMode="None" visibleRowCount="1">
-                                                    </table:Table>
-                                                </smartTable:SmartTable>
-                                                <smartTable:SmartTable id="_idCost" entitySet="ZPTP_C_RFQ_COST" useExportToExcel="false" tableType="Table" useTablePersonalisation="false" header="Cost" showRowCount="false">
-                                                    <smartTable:customToolbar>
-                                                        <m:OverflowToolbar design="Transparent">
-                                                            <m:ToolbarSpacer/>
-                                                            <m:Button text="Automatic Cost Calculation" press="handleGetValues" type="Emphasized" />
-                                                            <m:Button text="Manual Cost Calculation" press="handlePressMargin"/>
-                                                        </m:OverflowToolbar>
-                                                    </smartTable:customToolbar>
-                                                    <smartTable:layoutData>
-                                                        <m:FlexItemData growFactor="1" baseSize="0%"/>
-                                                    </smartTable:layoutData>
-                                                    <table:Table selectionMode="None" visibleRowCount="5">
-                                                        <table:columns>
-                                                            <table:Column width="120px" hAlign="End" filterProperty="Margin" sortProperty="Margin">
-                                                                <table:customData>
-                                                                    <core:CustomData 
-                                                                        key="p13nData"
-                                                                        value='\{"columnKey": "Margin", "columnIndex":"2", "vAlign": "End"}' />
-                                                                </table:customData>
-                                                                <m:Text text="Margin" textAlign="End"/>
-                                                                <table:template>
-                                                                    <m:Text 
-                                                                        text="{
+                                        </l:BlockLayoutCell>
+                                        <l:BlockLayoutCell>
+                                            <m:ScrollContainer height="100%" width="100%" vertical="false">
+                                                <l:VerticalLayout>
+                                                    <smartTable:SmartTable id="_idISBNText" entitySet="ZPTP_C_ISBN_TEXT" smartFilterId="smartFilterBar" tableType="Table" useExportToExcel="false" useVariantManagement="false" useTablePersonalisation="false" header="ISBN Text" showRowCount="false">
+                                                        <smartTable:layoutData>
+                                                            <m:FlexItemData growFactor="1" baseSize="0%" />
+                                                        </smartTable:layoutData>
+                                                        <table:Table selectionMode="None" visibleRowCount="1" />
+                                                    </smartTable:SmartTable>
+                                                    <smartTable:SmartTable id="_idCost" entitySet="ZPTP_C_RFQ_COST" useExportToExcel="false" tableType="Table" useTablePersonalisation="false" header="Cost ({CompanyCodeCurrency})" showRowCount="false">
+                                                        <smartTable:customToolbar>
+                                                            <m:OverflowToolbar design="Transparent">
+                                                                <m:ToolbarSpacer />
+                                                                <m:Button text="Automatic Cost Calc." press="handleGetValues" type="Emphasized" />
+                                                                <m:Button text="Manual Cost Calc." press="handlePressMargin" />
+                                                            </m:OverflowToolbar>
+                                                        </smartTable:customToolbar>
+                                                        <smartTable:layoutData>
+                                                            <m:FlexItemData growFactor="1" baseSize="0%" />
+                                                        </smartTable:layoutData>
+                                                        <table:Table selectionMode="None" visibleRowCount="3">
+                                                            <table:columns>
+                                                                <table:Column width="100px" hAlign="End" filterProperty="UnitCost" sortProperty="UnitCost">
+                                                                    <table:customData>
+                                                                        <core:CustomData key="p13nData" value='\{"columnKey": "UnitCost", "columnIndex":"0", "vAlign": "End"}' />
+                                                                    </table:customData>
+                                                                    <m:Text text="Production cost/Unit" textAlign="End" />
+                                                                    <table:template>
+                                                                        <m:Text
+                                                                            text="{
+                                                                            path: 'UnitCost',
+                                                                            type: 'sap.ui.model.type.Float',
+                                                                            formatOptions: {
+                                                                                maxFractionDigits : 2,
+                                                                                minFractionDigits: 2
+                                                                            }
+                                                                        }"
+                                                                            textAlign="End"
+                                                                        />
+                                                                    </table:template>
+                                                                </table:Column>
+                                                                <table:Column width="100px" hAlign="End" filterProperty="Quantity" sortProperty="Quantity">
+                                                                    <table:customData>
+                                                                        <core:CustomData key="p13nData" value='\{"columnKey": "Quantity", "columnIndex":"1", "vAlign": "End"}' />
+                                                                    </table:customData>
+                                                                    <m:Text text="Quantity" textAlign="End" />
+                                                                    <table:template>
+                                                                        <m:Text
+                                                                            text="{
+                                                                            path: 'Quantity',
+                                                                            type: 'sap.ui.model.type.Float',
+                                                                            formatOptions: {
+                                                                                maxFractionDigits : 2,
+                                                                                minFractionDigits: 2
+                                                                            }
+                                                                        }"
+                                                                            textAlign="End"
+                                                                        />
+                                                                    </table:template>
+                                                                </table:Column>
+                                                                <table:Column width="100px" hAlign="End" filterProperty="ProductionCostTotal" sortProperty="ProductionCostTotal">
+                                                                    <table:customData>
+                                                                        <core:CustomData key="p13nData" value='\{"columnKey": "ProductionCostTotal", "columnIndex":"2", "vAlign": "End"}' />
+                                                                    </table:customData>
+                                                                    <m:Text text="Production Cost Total" textAlign="End" />
+                                                                    <table:template>
+                                                                        <m:Text
+                                                                            text="{
+                                                                            path: 'ProductionCostTotal',
+                                                                            type: 'sap.ui.model.type.Float',
+                                                                            formatOptions: {
+                                                                                maxFractionDigits : 2,
+                                                                                minFractionDigits: 2
+                                                                            }
+                                                                        }"
+                                                                            textAlign="End"
+                                                                        />
+                                                                    </table:template>
+                                                                </table:Column>
+                                                                <table:Column width="100px" hAlign="End" filterProperty="TotalIncome" sortProperty="TotalIncome">
+                                                                    <table:customData>
+                                                                        <core:CustomData key="p13nData" value='\{"columnKey": "TotalIncome", "columnIndex":"3", "vAlign": "End"}' />
+                                                                    </table:customData>
+                                                                    <m:Text text="Total Income" textAlign="End" />
+                                                                    <table:template>
+                                                                        <m:Text
+                                                                            text="{
+                                                                            path: 'TotalIncome',
+                                                                            type: 'sap.ui.model.type.Float',
+                                                                            formatOptions: {
+                                                                                maxFractionDigits : 2,
+                                                                                minFractionDigits: 2
+                                                                            }
+                                                                        }"
+                                                                            textAlign="End"
+                                                                        />
+                                                                    </table:template>
+                                                                </table:Column>
+                                                                <table:Column width="100px" hAlign="End" filterProperty="Margin" sortProperty="Margin">
+                                                                    <table:customData>
+                                                                        <core:CustomData key="p13nData" value='\{"columnKey": "Margin", "columnIndex":"4", "vAlign": "End"}' />
+                                                                    </table:customData>
+                                                                    <m:Text text="Margin" textAlign="End" />
+                                                                    <table:template>
+                                                                        <m:Text
+                                                                            text="{
                                                                             path: 'Margin',
                                                                             type: 'sap.ui.model.type.Float',
                                                                             formatOptions: {
-                                                                                maxFractionDigits : 3,
-                                                                                minFractionDigits: 3
+                                                                                maxFractionDigits : 2,
+                                                                                minFractionDigits: 2
                                                                             }
                                                                         }"
-                                                                        textAlign="End" />
-                                                                </table:template>
-                                                            </table:Column>
-                                                        </table:columns>
-                                                    </table:Table>
-                                                </smartTable:SmartTable>
-                                            </l:VerticalLayout >
-                                        </l:BlockLayoutCell >
-                                    </l:BlockLayoutRow >
-                                    <l:BlockLayoutRow >
-                                        <l:BlockLayoutCell >
-                                            <smartTable:SmartTable id="_idPTPRELREQ" entitySet="ZPTP_C_REL_REQSet" tableType="Table" useExportToExcel="true" enableAutoBinding="false" showRowCount="false" showFullScreenButton="true" fullScreenToggled="fullScreenToggledPress" header="Related Requisition Outstanding" requestAtLeastFields="Isbn">
+                                                                            textAlign="End"
+                                                                        />
+                                                                    </table:template>
+                                                                </table:Column>
+                                                                <table:Column width="100px" hAlign="End" filterProperty="MarginPercentage" sortProperty="MarginPercentage">
+                                                                    <table:customData>
+                                                                        <core:CustomData key="p13nData" value='\{"columnKey": "MarginPercentage", "columnIndex":"5", "vAlign": "End"}' />
+                                                                    </table:customData>
+                                                                    <m:Text text="Margin  %" textAlign="End" />
+                                                                    <table:template>
+                                                                        <m:Text
+                                                                            text="{
+                                                                            path: 'MarginPercentage',
+                                                                            type: 'sap.ui.model.type.Float',
+                                                                            formatOptions: {
+                                                                                maxFractionDigits : 2,
+                                                                                minFractionDigits: 2
+                                                                            }
+                                                                        }"
+                                                                            textAlign="End"
+                                                                        />
+                                                                    </table:template>
+                                                                </table:Column>
+                                                            </table:columns>
+                                                        </table:Table>
+                                                    </smartTable:SmartTable>
+                                                </l:VerticalLayout>
+                                            </m:ScrollContainer>
+                                        </l:BlockLayoutCell>
+                                    </l:BlockLayoutRow>
+                                    <l:BlockLayoutRow>
+                                        <l:BlockLayoutCell>
+                                            <smartTable:SmartTable
+                                                id="_idPTPRELREQ"
+                                                entitySet="ZPTP_C_REL_REQSet"
+                                                tableType="Table"
+                                                useExportToExcel="true"
+                                                enableAutoBinding="false"
+                                                showRowCount="false"
+                                                showFullScreenButton="true"
+                                                fullScreenToggled="fullScreenToggledPress"
+                                                header="Related Requisition Outstanding"
+                                                requestAtLeastFields="Isbn"
+                                            >
                                                 <!-- layout data used to make the table growing but the filter bar fixed -->
                                                 <smartTable:layoutData>
-                                                    <m:FlexItemData growFactor="1" baseSize="0%"/>
+                                                    <m:FlexItemData growFactor="1" baseSize="0%" />
                                                 </smartTable:layoutData>
                                                 <table:Table selectionMode="None" visibleRowCount="5">
                                                     <table:columns>
@@ -242,8 +382,8 @@
                                                     </table:columns>
                                                 </table:Table>
                                             </smartTable:SmartTable>
-                                        </l:BlockLayoutCell >
-                                    </l:BlockLayoutRow >
+                                        </l:BlockLayoutCell>
+                                    </l:BlockLayoutRow>
                                 </l:BlockLayout>
                             </blocks>
                         </ObjectPageSubSection>

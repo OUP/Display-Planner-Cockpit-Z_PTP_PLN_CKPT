@@ -1,0 +1,13 @@
+{
+    "base": "./dist",
+    "conn_usestrictssl": false,
+    "conn_server": "https://vhoups4dlb.uk.oup.com",
+    "conn_client": "110",
+    "conn_user": "BhaskarS",
+    "conn_password": "S4D_130_q03",
+    "abap_package": "ZPTP",
+    "abap_transport": "S4DK909587",
+    "abap_bsp": "Z_PTP_PLN_CKPT",
+    "abap_bsp_text": "Planner cockpit deployment from BAS",
+    "calcappindex": true
+}
