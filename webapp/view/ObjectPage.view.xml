@@ -165,14 +165,26 @@
                                                 fullScreenToggled="fullScreenToggledPress"
                                                 enableAutoBinding="false"
                                                 beforeRebindTable="onBeforeRebind"
-                                                requestAtLeastFields="Material"
+                                                requestAtLeastFields="PurchaseOrder,Material"
                                                 persistencyKey="SmartTableAnalytical_Explored"
                                             >
                                                 <!-- layout data used to make the table growing but the filter bar fixed -->
                                                 <smartTable:layoutData>
                                                     <m:FlexItemData growFactor="1" baseSize="0%" />
                                                 </smartTable:layoutData>
-                                                <table:Table selectionMode="None" visibleRowCount="5" />
+                                                <table:Table selectionMode="None" visibleRowCountMode="Auto" columnResize="fnColumnResize" rowSelectionChange="onPress" enableColumnFreeze="true">
+                                                    <table:columns>
+                                                        <table:Column width="180px" hAlign="Begin" sortProperty="PurchaseOrder" filterProperty="PurchaseOrder">
+                                                            <table:customData>
+                                                                <core:CustomData key="p13nData" value='\{"columnKey": "PurchaseOrder", "columnIndex":"0", "leadingProperty": "PurchaseOrder", "sortProperty": "PurchaseOrder", "filterProperty": "PurchaseOrder"}' />
+                                                            </table:customData>
+                                                            <m:Label text="Purchasing Document" />
+                                                            <table:template>
+                                                                <m:Link text="{PurchaseOrder}" press=".handlePurchaseOrderPress" />
+                                                            </table:template>
+                                                        </table:Column>
+                                                    </table:columns>
+                                                </table:Table>
                                             </smartTable:SmartTable>
                                         </l:BlockLayoutCell>
                                     </l:BlockLayoutRow>

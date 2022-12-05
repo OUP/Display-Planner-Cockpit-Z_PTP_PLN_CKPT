@@ -1,8 +1,9 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:navpopover="sap.ui.comp.navpopover" xmlns:table="sap.ui.table" xmlns:f="sap.f" xmlns:core="sap.ui.core">
+<core:FragmentDefinition xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:navpopover="sap.ui.comp.navpopover" xmlns:table="sap.ui.table" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
     <smartTable:SmartTable
+        id="_reqwlklistID"
+        tableType="AnalyticalTable"
         entitySet="zptp_c_req_wl"
         smartFilterId="_reqwlklistfilterID"
-        id="_reqwlklistID"
         useExportToExcel="true"
         beforeExport="onBeforeExport"
         useVariantManagement="true"
@@ -13,22 +14,40 @@
         showRowCount="true"
         persistencyKey="SmartTableReqwlkList_Explored"
         enableAutoBinding="false"
-        requestAtLeastFields="PackInfo"
+        requestAtLeastFields="PurchaseRequisition,Material,Material_Text,PackInfo"
         class="sapUiResponsiveContentPadding"
     >
         <!-- layout data used to make the table growing but the filter bar fixed -->
         <smartTable:layoutData>
             <FlexItemData growFactor="1" baseSize="0%" />
         </smartTable:layoutData>
-        <table:Table visibleRowCountMode="Auto" columnResize="fnColumnResize" rowSelectionChange="onPress" selectionMode="Single">
+        <table:Table visibleRowCountMode="Auto" columnResize="fnColumnResize" rowSelectionChange="onPress" selectionMode="Single" enableColumnFreeze="true">
             <table:columns>
+                <table:Column width="180px" hAlign="Begin" sortProperty="PurchaseRequisition" filterProperty="PurchaseRequisition">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey": "PurchaseRequisition", "columnIndex":"0", "leadingProperty": "PurchaseRequisition", "sortProperty": "PurchaseRequisition", "filterProperty": "PurchaseRequisition"}' />
+                    </table:customData>
+                    <Label text="Purchase Requisition No." />
+                    <table:template>
+                        <Link text="{PurchaseRequisition}" press=".handlePurchaseReqPress" app:MATERIAL="Material" />
+                    </table:template>
+                </table:Column>
+                <table:Column width="450px" hAlign="Begin" sortProperty="Material" filterProperty="Material">
+                    <table:customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey": "Material", "columnIndex":"2", "leadingProperty": "Material", "sortProperty": "Material", "filterProperty": "Material"}' />
+                    </table:customData>
+                    <Label text="{/#zptp_c_req_wlType/Material/@sap:label}" />
+                    <table:template>
+                        <Link text="{Material} ({Material_Text})" press=".handleMaterialPress" app:MATERIAL="Material" />
+                    </table:template>
+                </table:Column>
                 <table:Column id="PackInfoR" width="100px" hAlign="Begin">
                     <table:customData>
                         <core:CustomData key="p13nData" value='\{"columnKey": "PackInfo", "columnIndex":"10"}' />
                     </table:customData>
-                    <Text text="PackInfo" />
+                    <Label text="{/#zptp_c_req_wlType/PackInfo/@sap:label}" />
                     <table:template>
-                        <Link text="{PackInfo}" subtle="true" press="handleLinkPress" />
+                        <Link text="{PackInfo}" subtle="true" press=".handleLinkPress" />
                     </table:template>
                 </table:Column>
             </table:columns>

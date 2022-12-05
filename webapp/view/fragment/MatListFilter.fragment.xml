@@ -12,8 +12,8 @@
             id="_matlistfilterID" 
 			entitySet="zptp_c_mat_list"
             useDateRangeType="true"
-			persistencyKey="SmartFilterReqwlkList_Explored"
-			useToolbar="false">
+			persistencyKey="SmartFilterMatList_Explored"
+			useToolbar="true">
 			<!-- layout data used to make the table growing but the filter bar fixed -->
 			<smartFilterBar:layoutData>
 				<FlexItemData shrinkFactor="0"/>

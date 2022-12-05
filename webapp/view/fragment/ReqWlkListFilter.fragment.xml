@@ -12,7 +12,7 @@
 			entitySet="zptp_c_req_wl"
 			persistencyKey="SmartFilterReqwlkList_Explored"
             useDateRangeType="true"
-			useToolbar="false">
+			useToolbar="true">
 			<!-- layout data used to make the table growing but the filter bar fixed -->
 			<smartFilterBar:layoutData>
 				<FlexItemData shrinkFactor="0"/>

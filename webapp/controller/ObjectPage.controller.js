@@ -562,6 +562,38 @@ sap.ui.define(
           );
         },
 
+        fnCreatePurchaseOrder: function () {
+          var aMaterial = this.getView()
+            .getBindingContext()
+            .getProperty("Material"); // read PurchaseOrder from OData path Product/SupplierID
+          var oTarget = {
+            semanticObject: "PurchaseOrder",
+            action: "create",
+          };
+
+          var oParams = {
+            Material: aMaterial,
+            "sap-ui-tech-hint": "GUI",
+            uitype: "advanced",
+          };
+
+          var sParams = "";
+          for (const property in oParams) {
+            sParams += `${property}=${oParams[property]}&`;
+          }
+
+          if (sParams.length > 0) {
+            // remove trailing '&'
+            sParams = sParams.substr(0, sParams.length - 1);
+          }
+
+          // launch the application in new tab
+          sap.m.URLHelper.redirect(
+            `#${oTarget.semanticObject}-${oTarget.action}?${sParams}`,
+            /*new window*/ true
+          );
+        },
+
         fnStockMovement: function (oEvent) {
           var aPurchaseOrder = this.extensionAPI
             .getSelectedContexts()[0]
@@ -602,6 +634,7 @@ sap.ui.define(
           var oParams = {
             Material: oData.Material,
             Plant: oData.Plant,
+            "sap-ui-tech-hint": "GUI",
           };
 
           var sParams = "";
@@ -646,6 +679,65 @@ sap.ui.define(
               shellHash: hash,
             },
           }); // navigate to ReceiptAdvances application
+        },
+
+        handlePurchaseOrderPress: function (oEvent) {
+          var oSource = oEvent.getSource();
+          var oBindingContext = oSource.getBindingContext();
+          var oBindingContextData = oBindingContext.getObject();
+
+          var Margin = oBindingContextData.Margin;
+          var Material = oBindingContextData.Material;
+          var NetPriceAmount = oBindingContextData.NetPriceAmount;
+          var OrderPriceUnit = oBindingContextData.OrderPriceUnit;
+          var OrderQuantity = oBindingContextData.OrderQuantity;
+          var PurchaseOrder = oBindingContextData.PurchaseOrder;
+          var PurchaseOrderDate = oBindingContextData.PurchaseOrderDate;
+          var PurchaseOrderQuantityUnit =
+            oBindingContextData.PurchaseOrderQuantityUnit;
+          var Supplier = oBindingContextData.Supplier;
+          var Supplier_Text = oBindingContextData.Supplier_Text;
+          var ZZ1_IMPRESSION_NUM_PDI =
+            oBindingContextData.ZZ1_IMPRESSION_NUM_PDI;
+
+          if (PurchaseOrderDate) {
+            PurchaseOrderDate = PurchaseOrderDate.toISOString();
+          }
+
+          var oTarget = {
+            semanticObject: "PurchaseOrder",
+            action: "manage",
+          };
+
+          var oParams = {
+            Margin,
+            Material,
+            NetPriceAmount,
+            OrderPriceUnit,
+            OrderQuantity,
+            PurchaseOrder,
+            PurchaseOrderDate,
+            PurchaseOrderQuantityUnit,
+            Supplier,
+            Supplier_Text,
+            ZZ1_IMPRESSION_NUM_PDI,
+          };
+
+          var sParams = "";
+          for (const property in oParams) {
+            sParams += `${property}=${oParams[property]}&`;
+          }
+
+          if (sParams.length > 0) {
+            // remove trailing '&'
+            sParams = sParams.substr(0, sParams.length - 1);
+          }
+
+          // launch the application in new tab
+          sap.m.URLHelper.redirect(
+            `#${oTarget.semanticObject}-${oTarget.action}?${sParams}`,
+            true /*new window*/
+          );
         },
 
         handleLinkPress: function (oEvent) {
@@ -871,15 +963,13 @@ sap.ui.define(
 
               var vProductionCostUnit = vProductionCostTotal / vUnitSale;
               var vProductionCostTotalNew =
-                vUnitSale *
-                (vProductionCostUnit + vProductionCostUnit * (vRoyalty / 100));
+                vUnitSale * vProductionCostUnit +
+                vTotalIncome * (vRoyalty / 100);
               var vFinalMargin = vTotalIncome - vProductionCostTotalNew;
 
-              var oCells = oView
-                .byId("_idCost")
-                .getTable()
-                .getRows()[0]
-                .getCells();
+              var oTable = oView.byId("_idCost").getTable();
+              var aRows = oTable.getRows();
+              var oCells = aRows[0].getCells();
 
               // production unit cost
               oCells[0].setText(vProductionCostUnit.toFixed(2));
@@ -898,7 +988,7 @@ sap.ui.define(
 
               // margin  %
               oCells[5].setText(
-                ((vFinalMargin / vProductionCostTotalNew) * 100).toFixed(2)
+                ((vFinalMargin / vTotalIncome) * 100).toFixed(2)
               );
 
               // this._configDialog(oButton, oDialog);

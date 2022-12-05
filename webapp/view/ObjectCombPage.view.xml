@@ -163,7 +163,19 @@
                                                 <smartTable:layoutData>
                                                     <m:FlexItemData growFactor="1" baseSize="0%" />
                                                 </smartTable:layoutData>
-                                                <table:Table selectionMode="None" />
+                                                <table:Table selectionMode="None" visibleRowCountMode="Auto" columnResize="fnColumnResize" rowSelectionChange="onPress" enableColumnFreeze="true">
+                                                    <table:columns>
+                                                        <table:Column width="180px" hAlign="Begin" sortProperty="PurchaseOrder" filterProperty="PurchaseOrder">
+                                                            <table:customData>
+                                                                <core:CustomData key="p13nData" value='\{"columnKey": "PurchaseOrder", "columnIndex":"0", "leadingProperty": "PurchaseOrder", "sortProperty": "PurchaseOrder", "filterProperty": "PurchaseOrder"}' />
+                                                            </table:customData>
+                                                            <m:Label text="Purchasing Document" />
+                                                            <table:template>
+                                                                <m:Link text="{PurchaseOrder}" press=".handlePurchaseOrderPress" />
+                                                            </table:template>
+                                                        </table:Column>
+                                                    </table:columns>
+                                                </table:Table>
                                             </smartTable:SmartTable>
                                         </l:BlockLayoutCell>
                                     </l:BlockLayoutRow>
@@ -222,8 +234,8 @@
                                                                                 path: 'UnitCost',
                                                                                 type: 'sap.ui.model.type.Float',
                                                                                 formatOptions: {
-                                                                                    maxFractionDigits : 3,
-                                                                                    minFractionDigits: 3
+                                                                                    maxFractionDigits : 2,
+                                                                                    minFractionDigits: 2
                                                                                 }
                                                                             }"
                                                                             textAlign="End"
@@ -241,8 +253,8 @@
                                                                                 path: 'Quantity',
                                                                                 type: 'sap.ui.model.type.Float',
                                                                                 formatOptions: {
-                                                                                    maxFractionDigits : 3,
-                                                                                    minFractionDigits: 3
+                                                                                    maxFractionDigits : 2,
+                                                                                    minFractionDigits: 2
                                                                                 }
                                                                             }"
                                                                             textAlign="End"
@@ -260,8 +272,8 @@
                                                                                 path: 'ProductionCostTotal',
                                                                                 type: 'sap.ui.model.type.Float',
                                                                                 formatOptions: {
-                                                                                    maxFractionDigits : 3,
-                                                                                    minFractionDigits: 3
+                                                                                    maxFractionDigits : 2,
+                                                                                    minFractionDigits: 2
                                                                                 }
                                                                             }"
                                                                             textAlign="End"
@@ -279,8 +291,8 @@
                                                                                 path: 'TotalIncome',
                                                                                 type: 'sap.ui.model.type.Float',
                                                                                 formatOptions: {
-                                                                                    maxFractionDigits : 3,
-                                                                                    minFractionDigits: 3
+                                                                                    maxFractionDigits : 2,
+                                                                                    minFractionDigits: 2
                                                                                 }
                                                                             }"
                                                                             textAlign="End"
@@ -298,8 +310,8 @@
                                                                                 path: 'Margin',
                                                                                 type: 'sap.ui.model.type.Float',
                                                                                 formatOptions: {
-                                                                                    maxFractionDigits : 3,
-                                                                                    minFractionDigits: 3
+                                                                                    maxFractionDigits : 2,
+                                                                                    minFractionDigits: 2
                                                                                 }
                                                                             }"
                                                                             textAlign="End"
@@ -317,8 +329,8 @@
                                                                                 path: 'MarginPercentage',
                                                                                 type: 'sap.ui.model.type.Float',
                                                                                 formatOptions: {
-                                                                                    maxFractionDigits : 3,
-                                                                                    minFractionDigits: 3
+                                                                                    maxFractionDigits : 2,
+                                                                                    minFractionDigits: 2
                                                                                 }
                                                                             }"
                                                                             textAlign="End"
