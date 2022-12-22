@@ -134,7 +134,8 @@
         "settings": {
           "defaultOperationMode": "Server",
           "defaultBindingMode": "OneWay",
-          "defaultCountMode": "Request"
+          "defaultCountMode": "Request",
+          "useBatch": false
         },
         "dataSource": "ReqWlkListDataSource",
         "preload": true
@@ -144,7 +145,8 @@
         "settings": {
           "defaultOperationMode": "Server",
           "defaultBindingMode": "OneWay",
-          "defaultCountMode": "Request"
+          "defaultCountMode": "Request",
+          "useBatch": false
         },
         "dataSource": "MatListDataSource",
         "preload": true
@@ -154,7 +156,8 @@
         "settings": {
           "defaultOperationMode": "Server",
           "defaultBindingMode": "OneWay",
-          "defaultCountMode": "Request"
+          "defaultCountMode": "Request",
+          "useBatch": false
         },
         "dataSource": "CombinationDataSource",
         "preload": true
@@ -164,7 +167,8 @@
         "settings": {
           "defaultOperationMode": "Server",
           "defaultBindingMode": "OneWay",
-          "defaultCountMode": "Request"
+          "defaultCountMode": "Request",
+          "useBatch": false
         },
         "dataSource": "RelReqDataSource",
         "preload": true
