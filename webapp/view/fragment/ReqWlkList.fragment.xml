@@ -1,4 +1,13 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:navpopover="sap.ui.comp.navpopover" xmlns:table="sap.ui.table" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:navpopover="sap.ui.comp.navpopover"
+    xmlns:table="sap.ui.table"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+>
     <smartTable:SmartTable
         id="_reqwlklistID"
         tableType="AnalyticalTable"
@@ -21,17 +30,8 @@
         <smartTable:layoutData>
             <FlexItemData growFactor="1" baseSize="0%" />
         </smartTable:layoutData>
-        <table:Table visibleRowCountMode="Auto" columnResize="fnColumnResize" rowSelectionChange="onPress" selectionMode="Single" enableColumnFreeze="true">
+        <table:Table visibleRowCountMode="Auto" threshold="25" columnResize="fnColumnResize" rowSelectionChange="onPress" selectionMode="Single" enableColumnFreeze="true">
             <table:columns>
-                <table:Column width="180px" hAlign="Begin" sortProperty="PurchaseRequisition" filterProperty="PurchaseRequisition">
-                    <table:customData>
-                        <core:CustomData key="p13nData" value='\{"columnKey": "PurchaseRequisition", "columnIndex":"0", "leadingProperty": "PurchaseRequisition", "sortProperty": "PurchaseRequisition", "filterProperty": "PurchaseRequisition"}' />
-                    </table:customData>
-                    <Label text="Purchase Requisition No." />
-                    <table:template>
-                        <Link text="{PurchaseRequisition}" press=".handlePurchaseReqPress" app:MATERIAL="Material" />
-                    </table:template>
-                </table:Column>
                 <table:Column width="450px" hAlign="Begin" sortProperty="Material" filterProperty="Material">
                     <table:customData>
                         <core:CustomData key="p13nData" value='\{"columnKey": "Material", "columnIndex":"2", "leadingProperty": "Material", "sortProperty": "Material", "filterProperty": "Material"}' />

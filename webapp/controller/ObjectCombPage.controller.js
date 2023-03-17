@@ -31,10 +31,12 @@ sap.ui.define(
         },
 
         _onObjectMatched: function (oEvent) {
-          this._sPath = oEvent.getParameter("arguments").objectPath;
-          if (this._sPath === undefined) {
-            this._sPath = oEvent.mParameters.arguments.obejctPath;
-          }
+          this._sPath = decodeURIComponent(
+            oEvent.getParameter("arguments").obejctPath
+          );
+          // if (this._sPath === undefined) {
+          //   this._sPath = oEvent.mParameters.arguments.obejctPath;
+          // }
 
           // set timeout for async call after 1 second
           setTimeout(() => this.onAfterMatched(), 1000);
@@ -50,7 +52,7 @@ sap.ui.define(
           var sPath = this._sPath;
 
           this.getView().bindElement({
-            path: "/" + sPath,
+            path: sPath,
             events: {
               dataRequested: () => {
                 // before odata call
@@ -80,7 +82,7 @@ sap.ui.define(
             this.getView()
               .byId("_idpreviousReprintComb")
               .getTable()
-              .bindRows("/" + sPath + "/to_PrePrnt", null, null);
+              .bindRows(sPath + "/to_PrePrnt", null, null);
           } catch (error) {
             // no catch block
           }
@@ -89,7 +91,7 @@ sap.ui.define(
             this.getView()
               .byId("_idSalesIBPForecastComb")
               .getTable()
-              .bindRows("/" + sPath + "/to_Forecast", null, null);
+              .bindRows(sPath + "/to_Forecast", null, null);
           } catch (error) {
             // no catch block
           }
@@ -98,7 +100,7 @@ sap.ui.define(
             this.getView()
               .byId("_idISBNTextComb")
               .getTable()
-              .bindRows("/" + sPath + "/to_Description", null, null);
+              .bindRows(sPath + "/to_Description", null, null);
           } catch (error) {
             // no catch block
           }
@@ -107,7 +109,7 @@ sap.ui.define(
             this.getView()
               .byId("_idStockDetailsComb")
               .getTable()
-              .bindRows("/" + sPath + "/to_StockOvp", null, null);
+              .bindRows(sPath + "/to_StockOvp", null, null);
           } catch (error) {
             // no catch block
           }
@@ -116,7 +118,7 @@ sap.ui.define(
             this.getView()
               .byId("_idCostComb")
               .getTable()
-              .bindRows("/" + sPath + "/to_Costs", null, null);
+              .bindRows(sPath + "/to_Costs", null, null);
           } catch (error) {
             // no catch block
           }
@@ -175,7 +177,7 @@ sap.ui.define(
           var oDataModel = this.getView().getModel();
           that.getView().byId("_iddescPackinfoComb").setText("");
 
-          oDataModel.read("/" + sPath + "/" + aNav, {
+          oDataModel.read(sPath + "/" + aNav, {
             async: false,
 
             success: function (oData) {
@@ -196,7 +198,7 @@ sap.ui.define(
           var oDataModel = this.getView().getModel();
           that.getView().byId("_IdMarketComb").setText("");
 
-          oDataModel.read("/" + sPath + "/" + aNav, {
+          oDataModel.read(sPath + "/" + aNav, {
             async: false,
 
             success: function (oData) {
@@ -217,7 +219,7 @@ sap.ui.define(
           var oDataModel = this.getView().getModel();
           that.getView().byId("idProductTypeComb").setText("");
 
-          oDataModel.read("/" + sPath + "/" + aNav, {
+          oDataModel.read(sPath + "/" + aNav, {
             async: false,
 
             success: function (oData) {
@@ -736,9 +738,9 @@ sap.ui.define(
           };
 
           var oParams = {
-            "Material": aMaterial,
+            Material: aMaterial,
             "sap-ui-tech-hint": "GUI",
-            "uitype": "advanced"
+            uitype: "advanced",
           };
 
           var sParams = "";
@@ -822,7 +824,7 @@ sap.ui.define(
 
           var oParams = {
             Material: aMaterial,
-            "sap-ui-tech-hint": "GUI"
+            "sap-ui-tech-hint": "GUI",
           };
 
           var sParams = "";

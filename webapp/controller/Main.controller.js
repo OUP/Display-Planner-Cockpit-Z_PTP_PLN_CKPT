@@ -181,7 +181,8 @@ sap.ui.define(
           DeliveryDate = DeliveryDate.toISOString();
         }
         if (PurchaseRequisitionReleaseDate) {
-          PurchaseRequisitionReleaseDate = PurchaseRequisitionReleaseDate.toISOString();
+          PurchaseRequisitionReleaseDate =
+            PurchaseRequisitionReleaseDate.toISOString();
         }
 
         var oParams = {
@@ -283,7 +284,8 @@ sap.ui.define(
           DeliveryDate = DeliveryDate.toISOString();
         }
         if (PurchaseRequisitionReleaseDate) {
-          PurchaseRequisitionReleaseDate = PurchaseRequisitionReleaseDate.toISOString();
+          PurchaseRequisitionReleaseDate =
+            PurchaseRequisitionReleaseDate.toISOString();
         }
 
         var oParams = {
@@ -469,48 +471,54 @@ sap.ui.define(
         // oItem.getParent().removeSelections();
       },
       onPressComb: function (oEvent) {
-        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        var oItem = oEvent.getSource();
-        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        var index = oItem.getSelectedIndex();
-        if (index >= 0) {
-          var aPurchaseRequisition = oEvent
-            .getSource()
-            .getParent()
-            .getTable()
-            .getContextByIndex(index)
-            .getProperty("PurchaseRequisition");
+        const oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        const sPath = oEvent.getParameter("rowContext").getPath();
 
-          if (aPurchaseRequisition !== "") {
-            oRouter.navTo("ObjectCombPage", {
-              obejctPath: oItem.getBinding().aKeys[index],
-            });
-            //oItem.getParent().removeSelections();
-          } else {
-            var aProduct = oEvent
-              .getSource()
-              .getParent()
-              .getTable()
-              .getContextByIndex(index)
-              .getProperty("Product");
-            var aPlant = oEvent
-              .getSource()
-              .getParent()
-              .getTable()
-              .getContextByIndex(index)
-              .getProperty("Plant");
+        oRouter.navTo("ObjectCombPage", {
+          obejctPath: encodeURIComponent(sPath),
+        });
 
-            var sPath =
-              "ZPTP_C_PLN_COMB(Product='" +
-              aProduct +
-              "',Plant='" +
-              aPlant +
-              "')";
-            oRouter.navTo("ObjectCombPage", {
-              obejctPath: sPath,
-            });
-          }
-        }
+        // var oItem = oEvent.getSource();
+        // var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        // var index = oItem.getSelectedIndex();
+        // if (index >= 0) {
+        //   var aPurchaseRequisition = oEvent
+        //     .getSource()
+        //     .getParent()
+        //     .getTable()
+        //     .getContextByIndex(index)
+        //     .getProperty("PurchaseRequisition");
+
+        //   if (aPurchaseRequisition !== "") {
+        //     oRouter.navTo("ObjectCombPage", {
+        //       obejctPath: oItem.getBinding().aKeys[index],
+        //     });
+        //     //oItem.getParent().removeSelections();
+        //   } else {
+        //     var aProduct = oEvent
+        //       .getSource()
+        //       .getParent()
+        //       .getTable()
+        //       .getContextByIndex(index)
+        //       .getProperty("Product");
+        //     var aPlant = oEvent
+        //       .getSource()
+        //       .getParent()
+        //       .getTable()
+        //       .getContextByIndex(index)
+        //       .getProperty("Plant");
+
+        //     var sPath =
+        //       "ZPTP_C_PLN_COMB(Product='" +
+        //       aProduct +
+        //       "',Plant='" +
+        //       aPlant +
+        //       "')";
+        //     oRouter.navTo("ObjectCombPage", {
+        //       obejctPath: sPath,
+        //     });
+        //   }
+        // }
       },
       _onBusyStateChanged: function (oEvent) {
         var bBusy = oEvent.getParameter("busy");

@@ -10,6 +10,7 @@
         useTablePersonalisation="true"
         header="Material List"
         showRowCount="true"
+        
         persistencyKey="SmartTableMatList_Explored"
         enableAutoBinding="false"
         requestAtLeastFields="Product,Product_Text,PackInfo"
@@ -19,7 +20,7 @@
         <smartTable:layoutData>
             <FlexItemData growFactor="1" baseSize="0%" />
         </smartTable:layoutData>
-        <table:Table visibleRowCountMode="Auto" columnResize="fnColumnResize" rowSelectionChange="onPressMat" selectionBehavior="Row" selectionMode="Single" enableColumnFreeze="true">
+        <table:Table visibleRowCountMode="Auto" threshold="25" columnResize="fnColumnResize" rowSelectionChange="onPressMat" selectionBehavior="Row" selectionMode="Single" enableColumnFreeze="true">
             <table:columns>
                 <table:Column width="450px" hAlign="Begin" showSortMenuEntry="true" sortProperty="Product" filterProperty="Product">
                     <table:customData>

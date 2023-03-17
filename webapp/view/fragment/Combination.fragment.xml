@@ -1,4 +1,4 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:table="sap.ui.table" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+<core:FragmentDefinition xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:smartField="sap.ui.comp.smartfield" xmlns:smartTable="sap.ui.comp.smarttable" xmlns:table="sap.ui.table" xmlns:f="sap.f" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
     <smartTable:SmartTable
         entitySet="ZPTP_C_PLN_COMB"
         smartFilterId="_combintionfilterID"
@@ -19,17 +19,18 @@
         <smartTable:layoutData>
             <FlexItemData growFactor="1" baseSize="0%" />
         </smartTable:layoutData>
-        <table:Table visibleRowCountMode="Auto" columnResize="fnColumnResize" rowSelectionChange="onPressComb" selectionBehavior="Row" selectionMode="Single" enableColumnFreeze="true">
+        <table:Table visibleRowCountMode="Auto" threshold="25" columnResize="fnColumnResize" rowSelectionChange="onPressComb" selectionBehavior="Row" selectionMode="Single" enableColumnFreeze="true">
             <table:columns>
-                <table:Column width="180px" hAlign="Begin" sortProperty="PurchaseRequisition" filterProperty="PurchaseRequisition">
+                <!-- <table:Column width="180px" hAlign="Begin" sortProperty="PurchaseRequisition" filterProperty="PurchaseRequisition">
                     <table:customData>
                         <core:CustomData key="p13nData" value='\{"columnKey": "PurchaseRequisition", "columnIndex":"0", "leadingProperty": "PurchaseRequisition", "sortProperty": "PurchaseRequisition", "filterProperty": "PurchaseRequisition"}' />
                     </table:customData>
                     <Label text="Purchase Requisition No." />
-                    <table:template>
-                        <Link text="{PurchaseRequisition}" press=".handlePurchaseReqPress" app:MATERIAL="Product" />
+                    <table:template> -->
+                        <!-- <Link text="{PurchaseRequisition}" press=".handlePurchaseReqPress" app:MATERIAL="Product" /> -->
+                        <!-- <smartField:SmartField value="{PurchaseRequisition}"/>
                     </table:template>
-                </table:Column>
+                </table:Column> -->
                 <table:Column width="450px" hAlign="Begin" sortProperty="Product" filterProperty="Product">
                     <table:customData>
                         <core:CustomData key="p13nData" value='\{"columnKey": "Product", "columnIndex":"2", "leadingProperty": "Product", "sortProperty": "Product", "filterProperty": "Product"}' />

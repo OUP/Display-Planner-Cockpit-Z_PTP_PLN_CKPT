@@ -25,4 +25,4 @@ builder:
           name: Z_PTP_PLN_CKPT
           description: Planner cockpit deployment from BAS
           package: ZPTP
-          transport: S4DK914613
+          transport: S4DK917156
