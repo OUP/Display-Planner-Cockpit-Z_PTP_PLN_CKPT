@@ -4,11 +4,23 @@ sap.ui.define(
     "sap/ui/core/Fragment",
     "sap/ui/core/routing/History",
     "sap/ui/model/Filter",
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
     "oup/ptp/zptpplannerscockpit/model/formatter",
   ],
-  function (Controller, Fragment, History, Filter, formatter) {
+  function (
+    Controller,
+    Fragment,
+    History,
+    Filter,
+    MessageBox,
+    MessageToast,
+    formatter
+  ) {
     "use strict";
+
     var _oCombinationModel = null;
+    let _bAutCostCalc = false;
 
     return Controller.extend(
       "oup.ptp.zptpplannerscockpit.controller.ObjectMatPage",
@@ -41,6 +53,7 @@ sap.ui.define(
           // set timeout for async call after 1 second
           setTimeout(() => this.onAfterMatched(), 1000);
         },
+
         fullScreenToggledPress: function (oEvent) {
           if (oEvent.getParameters().fullScreen) {
             oEvent.getSource().getTable().setVisibleRowCount(14);
@@ -48,32 +61,44 @@ sap.ui.define(
             oEvent.getSource().getTable().setVisibleRowCount(5);
           }
         },
+
         onAfterMatched: function () {
           var sPath = this._sPath;
+
+          _oCombinationModel.read(sPath, {
+            success: (oData) => {
+              if (!oData) {
+                return;
+              }
+
+              // trigger table rebind
+              const oRelReqTable = this.getView().byId("_idPTPRELREQComb");
+
+              oRelReqTable
+                .getTable()
+                .bindRows(
+                  `/ZPTP_C_REL_REQ(P_Material='${oData.Product}',P_Plant='${oData.Plant}')/Set`,
+                  null,
+                  null
+                );
+            },
+            error: (_oError) => {},
+          });
 
           this.getView().bindElement({
             path: sPath,
             events: {
-              dataRequested: () => {
-                // before odata call
-              },
-              dataReceived: (oDataResponse) => {
-                const oData = oDataResponse.getParameter("data");
+              dataReceived: (_) => {
+                _bAutCostCalc = true;
 
-                if (!oData) {
-                  return;
-                }
-
-                // trigger table rebind
-                const oRelReqTable = this.getView().byId("_idPTPRELREQComb");
-
-                oRelReqTable
-                  .getTable()
-                  .bindRows(
-                    `/ZPTP_C_REL_REQ(P_Material='${oData.Product}',P_Plant='${oData.Plant}')/Set`,
-                    null,
-                    null
-                  );
+                // trigger automatic cost calc
+                const oCostSegBtn = this.getView().byId("comb-cost-seg-btn-id");
+                const oItem = oCostSegBtn.getItems()[0];
+                oCostSegBtn.setSelectedItem(oItem);
+                oCostSegBtn.setSelectedKey("A");
+                oCostSegBtn.fireSelectionChange({
+                  item: oItem,
+                });
               },
             },
           });
@@ -172,6 +197,7 @@ sap.ui.define(
           this.fnDescriptionMarket(sPath, "to_Market");
           this.fnDescriptionProductType(sPath, "to_ProductType");
         },
+
         fnDescriptionPack: function (sPath, aNav) {
           var that = this;
           var oDataModel = this.getView().getModel();
@@ -179,7 +205,6 @@ sap.ui.define(
 
           oDataModel.read(sPath + "/" + aNav, {
             async: false,
-
             success: function (oData) {
               if (oData !== undefined) {
                 that
@@ -193,6 +218,7 @@ sap.ui.define(
             error: function (oError) {},
           });
         },
+
         fnDescriptionMarket: function (sPath, aNav) {
           var that = this;
           var oDataModel = this.getView().getModel();
@@ -214,6 +240,7 @@ sap.ui.define(
             error: function (oError) {},
           });
         },
+
         fnDescriptionProductType: function (sPath, aNav) {
           var that = this;
           var oDataModel = this.getView().getModel();
@@ -235,6 +262,7 @@ sap.ui.define(
             error: function (oError) {},
           });
         },
+
         onNavBack: function (oEvent) {
           var oHistory = History.getInstance();
           var sPreviousHash = oHistory.getPreviousHash();
@@ -246,6 +274,7 @@ sap.ui.define(
             oRouter.navTo("RouteMain", true);
           }
         },
+
         onPressISBN: function (oEvent) {
           var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
           var oItem = oEvent.getSource();
@@ -261,6 +290,7 @@ sap.ui.define(
             obejctPathMat: aPath,
           });
         },
+
         fnZINF: function (oEvent) {
           var aMaterialNumber = this.getView()
             .getBindingContext()
@@ -327,6 +357,7 @@ sap.ui.define(
           //     },
           // });
         },
+
         fnZPST: function () {
           var aMaterial = this.getView()
             .getBindingContext()
@@ -391,6 +422,7 @@ sap.ui.define(
           //     },
           // }); // navigate to Supplier application
         },
+
         fnChangeMaterial: function () {
           var aMaterial = this.getView()
             .getBindingContext()
@@ -443,6 +475,7 @@ sap.ui.define(
           //     },
           // }); // navigate to Supplier application
         },
+
         fnOpenPurchaseOrder: function () {
           var aMaterial = this.getView()
             .getBindingContext()
@@ -496,6 +529,7 @@ sap.ui.define(
           //     },
           // }); // navigate to Supplier application
         },
+
         fnBackorderDetails: function () {
           var aMaterial = this.getView()
             .getBindingContext()
@@ -548,6 +582,7 @@ sap.ui.define(
           //     },
           // }); // navigate to Supplier application
         },
+
         fnMaterialRequirementList: function () {
           var aMaterial = this.getView()
             .getBindingContext()
@@ -608,6 +643,7 @@ sap.ui.define(
           //     },
           // }); // navigate to Supplier application
         },
+
         fnRequisition: function () {
           var aMaterial = this.getView()
             .getBindingContext()
@@ -675,6 +711,7 @@ sap.ui.define(
           //     },
           //}); // navigate to Supplier application
         },
+
         fnCreateRequisition: function () {
           var aMaterial = this.getView()
             .getBindingContext()
@@ -889,6 +926,7 @@ sap.ui.define(
             //this._bColumnOptimizationDone = true;
           }
         },
+
         onOKPressed: function () {
           this._pDialog.then(
             function (oDialog) {
@@ -997,101 +1035,30 @@ sap.ui.define(
             }.bind(this)
           );
         },
+
         onButtonPress: function (oEvent) {
           var oButton = oEvent.getSource();
           this.byId("actionSheet").openBy(oButton);
         },
-        handlePressMargin: function (oEvent) {
-          // var aMaterial = oEvent.getSource().getBindingContext().getProperty("matnr");
-          // var aPlant    = this.getView().getBindingContext().getProperty("Plant");
-          var that = this;
 
-          if (!this._pMarginCostDialog) {
-            this._pMarginCostDialog = Fragment.load({
-              id: this.getView().getId(),
-              name: "oup.ptp.zptpplannerscockpit.view.fragment.MarginCost",
-              controller: this,
-            }).then(function (oDialog) {
-              //oDialog.setModel(oView.getModel());
-              return oDialog;
-            });
+        onCostSelectChange: function (oEvent) {
+          const sKey = oEvent.getParameter("item").getKey();
+
+          // Automatic Cost Calc.
+          if (sKey === "A") {
+            this.handleAutCostCalc();
           }
-
-          this._pMarginCostDialog.then(
-            function (oDialog) {
-              oDialog.open();
-            }.bind(this)
-          );
+          // Manual Cost Calc.
+          else if (sKey === "B") {
+            this.handleManCostCalc();
+          }
+          // Compare ELT Est.
+          else {
+            this.handleCompareEst();
+          }
         },
 
-        onOKMarginPressed: function () {
-          var that = this;
-          this._pMarginCostDialog.then(
-            function (oDialog) {
-              var oView = this.getView();
-              var vFirstCost =
-                parseFloat(oView.byId("idFirstCost").getValue()) || 0;
-              var vPPBCost =
-                parseFloat(oView.byId("idPPBCost").getValue()) || 0;
-              var vFreightCost =
-                parseFloat(oView.byId("idFreight").getValue()) || 0;
-              var vRoyalty =
-                parseFloat(oView.byId("idRoyalty").getValue()) || 0;
-              var vDiscount =
-                parseFloat(oView.byId("idDiscount").getValue()) || 0;
-              var vUnitSale =
-                parseFloat(oView.byId("idUnitSale").getValue()) || 0;
-              var vRetailPrice =
-                parseFloat(oView.byId("idRetailPrice").getValue()) || 0;
-
-              // new logic
-              var vProductionCostTotal = vFirstCost + vPPBCost + vFreightCost;
-              var vDiscountCalc = (vRetailPrice * vDiscount) / 100;
-              var vTotalIncome = vUnitSale * (vRetailPrice - vDiscountCalc);
-
-              var vProductionCostUnit = vProductionCostTotal / vUnitSale;
-              var vProductionCostTotalNew =
-                vUnitSale * vProductionCostUnit +
-                vTotalIncome * (vRoyalty / 100);
-              var vFinalMargin = vTotalIncome - vProductionCostTotalNew;
-
-              var oCells = oView
-                .byId("_idCostComb")
-                .getTable()
-                .getRows()[0]
-                .getCells();
-
-              // production unit cost
-              oCells[0].setText(vProductionCostUnit.toFixed(2));
-
-              // quantity
-              oCells[1].setText(vUnitSale);
-
-              // production cost total
-              oCells[2].setText(vProductionCostTotalNew.toFixed(2));
-
-              // total income
-              oCells[3].setText(vTotalIncome.toFixed(2));
-
-              // margin
-              oCells[4].setText(vFinalMargin.toFixed(2));
-
-              // margin  %
-              oCells[5].setText(
-                ((vFinalMargin / vTotalIncome) * 100).toFixed(2)
-              );
-
-              //	this._configDialog(oButton, oDialog);
-              oDialog.close();
-            }.bind(this)
-          );
-        },
-
-        onCancelMarginPressed: function () {
-          this._pMarginCostDialog.then((oDialog) => oDialog.close());
-        },
-
-        handleGetValues: function () {
+        handleAutCostCalc: function () {
           var oData = this.getView().getBindingContext().getObject();
           var oDataModel = this.getView().getModel();
           var aFilters = [];
@@ -1123,38 +1090,68 @@ sap.ui.define(
                 // table instance
                 var oTable = this.getView().byId("_idCostComb").getTable();
 
-                // first row
-                var oRow = oTable.getRows()[0];
+                // get rows
+                var aRows = oTable.getRows();
 
-                // row cells
-                var aCells = oRow.getCells();
+                for (let index = 0; index < aRows.length; index++) {
+                  // rows
+                  const oRow = aRows[index];
 
-                // unit cost
-                aCells[0].setText(parseFloat(aData[0].UnitCost).toFixed(2));
+                  // row cells
+                  var aCells = oRow.getCells();
 
-                // quantity
-                aCells[1].setText(parseFloat(aData[0].Quantity).toFixed(2));
+                  if (index === 0) {
+                    // unit cost
+                    aCells[0].setText(parseFloat(aData[0].UnitCost).toFixed(2));
 
-                // production cost total
-                aCells[2].setText(
-                  parseFloat(aData[0].ProductionCostTotal).toFixed(2)
-                );
+                    // quantity
+                    aCells[1].setText(parseFloat(aData[0].Quantity).toFixed(2));
 
-                // total income
-                aCells[3].setText(parseFloat(aData[0].TotalIncome).toFixed(2));
+                    // production cost total
+                    aCells[2].setText(
+                      parseFloat(aData[0].ProductionCostTotal).toFixed(2)
+                    );
 
-                // margin
-                aCells[4].setText(parseFloat(aData[0].Margin).toFixed(2));
+                    // total income
+                    aCells[3].setText(
+                      parseFloat(aData[0].TotalIncome).toFixed(2)
+                    );
 
-                // margin  %
-                aCells[5].setText(
-                  parseFloat(aData[0].MarginPercentage).toFixed(2)
-                );
+                    // margin
+                    aCells[4].setText(parseFloat(aData[0].Margin).toFixed(2));
 
-                // message
-                sap.m.MessageToast.show(
-                  "Automatic cost calculation has updated cost table successfully"
-                );
+                    // margin  %
+                    aCells[5].setText(
+                      parseFloat(aData[0].MarginPercentage).toFixed(2)
+                    );
+                  } else {
+                    // unit cost
+                    aCells[0].setText("");
+
+                    // quantity
+                    aCells[1].setText("");
+
+                    // production cost total
+                    aCells[2].setText("");
+
+                    // total income
+                    aCells[3].setText("");
+
+                    // margin
+                    aCells[4].setText("");
+
+                    // margin  %
+                    aCells[5].setText("");
+                  }
+                }
+
+                if (!_bAutCostCalc) {
+                  MessageToast.show(
+                    "Automatic cost calculation has updated cost table successfully"
+                  );
+                }
+
+                _bAutCostCalc = false;
 
                 // stop busy indicator
                 sap.ui.core.BusyIndicator.hide();
@@ -1167,6 +1164,220 @@ sap.ui.define(
               // stop busy indicator
               sap.ui.core.BusyIndicator.hide();
             },
+          });
+        },
+
+        handleManCostCalc: function (oEvent) {
+          // var aMaterial = oEvent.getSource().getBindingContext().getProperty("matnr");
+          // var aPlant    = this.getView().getBindingContext().getProperty("Plant");
+
+          if (!this._pMarginCostDialog) {
+            this._pMarginCostDialog = Fragment.load({
+              id: this.getView().getId(),
+              name: "oup.ptp.zptpplannerscockpit.view.fragment.MarginCost",
+              controller: this,
+            }).then(function (oDialog) {
+              //oDialog.setModel(oView.getModel());
+              return oDialog;
+            });
+          }
+
+          this._pMarginCostDialog.then(
+            function (oDialog) {
+              oDialog.open();
+            }.bind(this)
+          );
+        },
+
+        handleCompareEst: function () {
+          var oData = this.getView().getBindingContext().getObject();
+          var oDataModel = this.getView().getModel();
+          var aFilters = [];
+
+          // material
+          aFilters.push(new Filter("Product", "EQ", oData.Product));
+
+          // impression no.
+          aFilters.push(
+            new Filter("Impression", "EQ", oData.ZZ1_IMPRESSION_NUM_PRI)
+          );
+
+          // start busy indicator
+          sap.ui.core.BusyIndicator.show(0);
+
+          // read values
+          oDataModel.read("/ZPTP_C_ELT_COST_EST", {
+            filters: aFilters,
+            success: function (oDataResponse) {
+              try {
+                var aData = oDataResponse.results || [];
+
+                // table instance
+                var oTable = this.getView().byId("_idCostComb").getTable();
+
+                for (let index = 0; index < aData.length; index++) {
+                  // restrict to max count of 3
+                  if (index === 3) {
+                    break;
+                  }
+
+                  const oData = aData[index];
+
+                  // first row
+                  var oRow = oTable.getRows()[index];
+
+                  // row cells
+                  var aCells = oRow.getCells();
+
+                  // unit cost - UnitCost
+                  aCells[0].setText(parseFloat(oData.ProdCostUnit).toFixed(2));
+
+                  // quantity
+                  aCells[1].setText(parseFloat(oData.Quantity).toFixed(2));
+
+                  // production cost total
+                  aCells[2].setText(
+                    parseFloat(oData.ProductionCostTotal).toFixed(2)
+                  );
+
+                  // total income
+                  aCells[3].setText(parseFloat(oData.TotalIncome).toFixed(2));
+
+                  // margin
+                  aCells[4].setText(parseFloat(oData.Margin).toFixed(2));
+
+                  // margin  %
+                  aCells[5].setText(
+                    parseFloat(oData.MarginPercentage).toFixed(2)
+                  );
+                }
+
+                // display message
+                if (aData.length > 0) {
+                  const sMessage = aData[0].Message;
+
+                  if (sMessage) {
+                    MessageBox.information(sMessage);
+                  } else {
+                    MessageToast.show(
+                      "Compare ELT estimates cost calculation has updated cost table successfully"
+                    );
+                  }
+                } else {
+                  const oCostSegBtn = this.getView().byId(
+                    "comb-cost-seg-btn-id"
+                  );
+                  const oItem = oCostSegBtn.getItems()[0];
+                  oCostSegBtn.setSelectedItem(oItem);
+                  oCostSegBtn.setSelectedKey("A");
+
+                  // hide message
+                  _bAutCostCalc = true;
+
+                  // display not loaded message
+                  MessageToast.show("Production cost is not loaded yet");
+                }
+
+                // stop busy indicator
+                sap.ui.core.BusyIndicator.hide();
+              } catch (error) {
+                // stop busy indicator
+                sap.ui.core.BusyIndicator.hide();
+              }
+            }.bind(this),
+            error: function (_oErrorResponse) {
+              // stop busy indicator
+              sap.ui.core.BusyIndicator.hide();
+            },
+          });
+        },
+
+        onOKMarginPressed: function () {
+          this._pMarginCostDialog.then((oDialog) => {
+            var oView = this.getView();
+            var vFirstCost =
+              parseFloat(oView.byId("idFirstCost").getValue()) || 0;
+            var vPPBCost = parseFloat(oView.byId("idPPBCost").getValue()) || 0;
+            var vFreightCost =
+              parseFloat(oView.byId("idFreight").getValue()) || 0;
+            var vRoyalty = parseFloat(oView.byId("idRoyalty").getValue()) || 0;
+            var vDiscount =
+              parseFloat(oView.byId("idDiscount").getValue()) || 0;
+            var vUnitSale =
+              parseFloat(oView.byId("idUnitSale").getValue()) || 0;
+            var vRetailPrice =
+              parseFloat(oView.byId("idRetailPrice").getValue()) || 0;
+
+            // new logic
+            var vProductionCostTotal = vFirstCost + vPPBCost + vFreightCost;
+            var vDiscountCalc = (vRetailPrice * vDiscount) / 100;
+            var vTotalIncome = vUnitSale * (vRetailPrice - vDiscountCalc);
+
+            var vProductionCostUnit = vProductionCostTotal / vUnitSale;
+            var vProductionCostTotalNew =
+              vUnitSale * vProductionCostUnit + vTotalIncome * (vRoyalty / 100);
+            var vFinalMargin = vTotalIncome - vProductionCostTotalNew;
+
+            var oTable = oView.byId("_idCostComb").getTable();
+            var aRows = oTable.getRows();
+
+            for (let index = 0; index < aRows.length; index++) {
+              const oRow = aRows[index];
+              var aCells = oRow.getCells();
+
+              if (index === 0) {
+                // production unit cost
+                aCells[0].setText(vProductionCostUnit.toFixed(2));
+
+                // quantity
+                aCells[1].setText(vUnitSale);
+
+                // production cost total
+                aCells[2].setText(vProductionCostTotalNew.toFixed(2));
+
+                // total income
+                aCells[3].setText(vTotalIncome.toFixed(2));
+
+                // margin
+                aCells[4].setText(vFinalMargin.toFixed(2));
+
+                // margin  %
+                aCells[5].setText(
+                  ((vFinalMargin / vTotalIncome) * 100).toFixed(2)
+                );
+              } else {
+                // production unit cost
+                aCells[0].setText("");
+
+                // quantity
+                aCells[1].setText("");
+
+                // production cost total
+                aCells[2].setText("");
+
+                // total income
+                aCells[3].setText("");
+
+                // margin
+                aCells[4].setText("");
+
+                // margin  %
+                aCells[5].setText("");
+              }
+            }
+
+            //	this._configDialog(oButton, oDialog);
+            oDialog.close();
+          });
+        },
+
+        onCancelMarginPressed: function () {
+          this._pMarginCostDialog.then((oDialog) => {
+            const oCostSegBtn = this.getView().byId("comb-cost-seg-btn-id");
+            const oItem = oCostSegBtn.getItems()[0];
+            oCostSegBtn.setSelectedItem(oItem);
+            oCostSegBtn.setSelectedKey("A");
+            oDialog.close();
           });
         },
       }

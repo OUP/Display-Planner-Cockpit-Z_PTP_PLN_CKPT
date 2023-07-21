@@ -12,6 +12,10 @@
     "resources": "resources.json",
     "ach": "ach",
     "dataSources": {
+      "CostCheckDataSource": {
+        "uri": "/sap/opu/odata/sap/ZPTP_C_ELT_RD_CHK_CDS/",
+        "type": "OData"
+      },
       "ReqWlkListDataSource": {
         "uri": "/sap/opu/odata/sap/zptp_c_req_wl_cds/",
         "type": "OData",
@@ -128,6 +132,17 @@
         "settings": {
           "bundleName": "oup.ptp.zptpplannerscockpit.i18n.i18n"
         }
+      },
+      "CostCheck": {
+        "type": "sap.ui.model.odata.v2.ODataModel",
+        "settings": {
+          "defaultOperationMode": "Server",
+          "defaultBindingMode": "OneWay",
+          "defaultCountMode": "Request",
+          "useBatch": true
+        },
+        "dataSource": "CostCheckDataSource",
+        "preload": true
       },
       "ReqWlkList": {
         "type": "sap.ui.model.odata.v2.ODataModel",

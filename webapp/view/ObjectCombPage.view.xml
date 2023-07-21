@@ -213,9 +213,13 @@
                                                         <m:OverflowToolbar design="Transparent">
                                                             <m:Label text="Cost" />
                                                             <m:ToolbarSpacer />
-                                                            <m:Button text="Automatic Cost Calc." press="handleGetValues" type="Emphasized" />
-                                                            <m:Button text="Manual Cost Calc." press="handlePressMargin" />
-                                                            <!-- <m:OverflowToolbarButton icon="sap-icon://edit" id="btnMultiEdit" text="Edit Columns" press="handlePressMargin"/> -->
+                                                            <m:SegmentedButton id="comb-cost-seg-btn-id" selectedKey="A" selectionChange=".onCostSelectChange">
+                                                                    <m:items>
+                                                                        <m:SegmentedButtonItem key="A" text="Automatic Cost Calc." />
+                                                                        <m:SegmentedButtonItem key="B" text="Manual Cost Calc." />
+                                                                        <m:SegmentedButtonItem key="C" text="Compare ELT Est." />
+                                                                    </m:items>
+                                                                </m:SegmentedButton>
                                                         </m:OverflowToolbar>
                                                         <smartTable:layoutData>
                                                             <m:FlexItemData growFactor="1" baseSize="0%" />
